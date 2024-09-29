@@ -12,14 +12,18 @@ export const LoginForm = () => {
   const [validationToken, setValidationToken] = useState("");
   const { setTokens } = useAuth();
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
 
   const getValidationToken = async (data: any) => {
-    const response = await HttpRequest.post("/v1/auth/get-validation-token", {
+    const response = await HttpRequest.post("/v1/auth/get-validation-token/admin", {
       phone: data.phone,
     });
     if (response?.data?.validationToken) {
       setValidationToken(response.data.validationToken);
       setStep((prevStep) => prevStep + 1); // Update step based on previous state
+    }
+    if (response.status == 403) {
+      setError('You can not access this page!')
     }
   };
 
@@ -31,7 +35,7 @@ export const LoginForm = () => {
     if (response?.data) {
       const { accessToken, refreshToken } = response.data;
       setTokens(accessToken, refreshToken);
-      // navigate("/");
+      navigate("/");
     }
   };
 
@@ -56,7 +60,7 @@ export const LoginForm = () => {
   const step2ValidationSchema = Yup.object().shape({
     code: Yup.string()
       .required("Code is required")
-      .length(4, "Code must be exactly 6 characters"), // Adjust length as needed
+      .length(5, "Code must be exactly 5 characters"), // Adjust length as needed
   });
 
   return (
@@ -64,6 +68,7 @@ export const LoginForm = () => {
       className="w-1/2 flex justify-center items-center mx-auto my-5"
       key={step}
     >
+      {(error) && <p className="text-2xl">{error}</p>}
       <AppForm
         onSubmit={onSubmit}
         validationSchema={

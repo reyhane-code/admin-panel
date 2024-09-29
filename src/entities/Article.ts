@@ -6,5 +6,6 @@ export default interface Article {
   image: string;
   view: number;
   created_at: Date;
-  updated_at: Date;
+  updated_at: Date |  null;
+  deletedAt_at: Date |  null;
 }

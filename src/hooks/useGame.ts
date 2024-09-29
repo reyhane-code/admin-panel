@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Game, IGetGameResponse } from "../entities/Game";
+import { IGetGameResponse } from "../entities/Game";
 import { HttpRequest } from "../helpers/http-request-class.helper";
 
 const useGame = (slug: string) =>

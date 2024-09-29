@@ -1,11 +1,14 @@
 import List from "./common/List";
+import Image from "./common/Image";
+import { ImageFormat } from "../enums";
+import { IGetArticlesResponse } from "../responses/get-articles.response";
 import useApi from "../hooks/useApi";
 import Pagination from "./common/Pagination";
 import ExpandableText from "./ExpandableText";
-import IGetCommentsResponse from "../responses/get-comments.response";
+import { HttpRequest } from "../helpers/http-request-class.helper";
 
-const CommentsList = () => {
-  const { data, error, isLoading, setPage, params } = useApi<IGetCommentsResponse, Error>('/v1/comments');
+const ArticlesList = () => {
+  const { data, error, isLoading, setPage, params } = useApi<IGetArticlesResponse, Error>('/v1/articles/all');
 
 
   if (isLoading) {
@@ -15,12 +18,21 @@ const CommentsList = () => {
   if (error) {
     return (
       <div className="container mx-auto mt-5 text-red-500">
-        Error loading comments
+        Error loading articles
       </div>
     );
   }
   const onDelete = async (id: number) => {
-    console.log('deleting')
+    try {
+      const res = await HttpRequest.delete(`/v1/articles/${id}`)
+      if (res.status !== 200) {
+        throw new Error('something went wrong when deleting')
+      }
+
+    } catch (error) {
+      throw new Error('something went wrong')
+
+    }
   }
 
   const onUpdate = async () => {
@@ -30,34 +42,36 @@ const CommentsList = () => {
 
   const headers = [
     "ID",
+    "Title",
     "Content",
     "User ID",
-    "Article ID",
-    "Game ID",
-    "Entity Type",
-    "Confirmed",
+    "Image",
+    "View",
   ];
 
-  const renderRow = (comment: any) => (
+  const renderRow = (article: any) => (
     <>
       {headers.map((header, index) => {
         const key = header.toLowerCase().replace(" ", "_"); // Create a key from the header
-        if (key == 'confirmed') {
-          return <div className="border-b border-gray-200 py-2 flex justify-center items-center mx-2">{comment[key] ? 'Yes' : 'No'}</div>
-        }
-        else if (key == 'content') {
+        if (key == 'content') {
           return (
             <div key={index} className="border-b border-gray-200 py-2 flex justify-center items-center mx-2">
               <ExpandableText>
-                {comment[key]}
+                {article[key]}
               </ExpandableText>
             </div>
           );
         }
-        else {
+        else if (key === 'image') {
+          return (
+            <div key={index} className="border-b border-gray-200 py-4 flex justify-center items-center mx-2">
+              <Image query={{ hashKey: article[key], format: ImageFormat.WEBP }} />
+            </div>
+          );
+        } else {
           return (
             <div key={index} className="border-b border-gray-200 py-2 flex justify-center items-center mx-2">
-              {comment[key] !== undefined ? comment[key] : "N/A"} {/* Render cell dynamically */}
+              {article[key] !== undefined ? article[key] : "N/A"} {/* Render cell dynamically */}
             </div>
           );
         }
@@ -67,7 +81,7 @@ const CommentsList = () => {
   );
 
   return <>
-    <List onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} headersCount={7} />
+    <List onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} headersCount={6} />
     <div className="mx-auto w-max mt-4">
       {(data && data?.items.length >= 1) && (
         <Pagination
@@ -81,4 +95,4 @@ const CommentsList = () => {
   </>
 };
 
-export default CommentsList;
+export default ArticlesList;

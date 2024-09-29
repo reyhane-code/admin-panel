@@ -1,6 +1,6 @@
 import { IPaginationResponse } from "../responses/pagination-response";
 
-export interface IGetCommentsResponse {
+export interface IGetCommentsResponse2 {
     pagination: IPaginationResponse;
     items: Comment[];
     likes: [{ comment_id: number, count: number }]

@@ -1,13 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
-import GameDetailPage from "./pages/GameDetailPage";
 import HomePage from "./pages/HomePage";
 import DefaultLayout from "./components/layouts/DefaultLayout";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import PrivateRoutes from "./components/PrivateRoutes";
-import ArticlesPage from "./pages/ArticlesPage";
-import ArticleDetailPage from "./pages/ArticleDetailPage";
 import RouterLayout from "./components/layouts/RouterLayout";
 
 // const routeBuilder = (routes: any[]) => {
@@ -44,14 +41,6 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "games/:slug",
-        element: (
-          <RouterLayout>
-            <GameDetailPage />
-          </RouterLayout>
-        ),
-      },
-      {
         path: "login",
         element: (
           <RouterLayout>
@@ -59,22 +48,7 @@ const router = createBrowserRouter([
           </RouterLayout>
         ),
       },
-      {
-        path: "articles",
-        element: (
-          <RouterLayout>
-            <ArticlesPage />
-          </RouterLayout>
-        ),
-      },
-      {
-        path: "articles/:id",
-        element: (
-          <RouterLayout>
-            <ArticleDetailPage />
-          </RouterLayout>
-        ),
-      },
+      
     ],
   },
   {

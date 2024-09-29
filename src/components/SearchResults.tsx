@@ -1,3 +1,4 @@
+import { Game } from '../entities/Game';
 import useSearch from '../hooks/useSearch';
 import { Link } from 'react-router-dom';
 
@@ -16,7 +17,7 @@ const SearchResults = ({ searchText }: Props) => {
                 <ul>
                     <li className='flex flex-col'>
                         <h2>Games</h2>
-                        {data && data.items.games?.slice(0, 3).map(game => (
+                        {data && data.items.games?.slice(0, 3).map((game: Game) => (
                             <Link to={`/games/${game.slug}`} key={game.id} className='absolute left-0 top-0'>{game.name}</Link>
                         ))}
                     </li>

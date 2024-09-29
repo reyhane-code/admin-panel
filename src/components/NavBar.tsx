@@ -14,9 +14,6 @@ const NavBar = () => {
         <SearchInput />
       </div>
       <div className="flex items-center gap-x-2 lg:gap-x-4">
-        <Link to="/articles" className="btn btn-outline btn-sm lg:btn-md">
-          Articles
-        </Link>
         {isAuthenticated ? (
           <Link to="/profile" className="btn btn-outline btn-sm lg:btn-md">
             Profile

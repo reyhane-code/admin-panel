@@ -1,11 +1,14 @@
 import List from "./common/List";
+import Image from "./common/Image";
+import { ImageFormat } from "../enums";
+import { useArticles } from "../hooks/useArticles";
 import useApi from "../hooks/useApi";
+import { IGetGamesResponse } from "../responses/get-games.response";
 import Pagination from "./common/Pagination";
 import ExpandableText from "./ExpandableText";
-import IGetCommentsResponse from "../responses/get-comments.response";
 
-const CommentsList = () => {
-  const { data, error, isLoading, setPage, params } = useApi<IGetCommentsResponse, Error>('/v1/comments');
+const GamesList = () => {
+  const { data, error, isLoading, params, setPage } = useApi<IGetGamesResponse, Error>('/v1/games/all');
 
 
   if (isLoading) {
@@ -15,7 +18,7 @@ const CommentsList = () => {
   if (error) {
     return (
       <div className="container mx-auto mt-5 text-red-500">
-        Error loading comments
+        Error loading articles
       </div>
     );
   }
@@ -30,42 +33,41 @@ const CommentsList = () => {
 
   const headers = [
     "ID",
-    "Content",
-    "User ID",
-    "Article ID",
-    "Game ID",
-    "Entity Type",
-    "Confirmed",
+    "Name",
+    "Description",
+    "Background Image",
+    "Rating Top",
+    "Metacritic",
+    "User ID"
   ];
 
-  const renderRow = (comment: any) => (
+  const renderRow = (game: any) => (
     <>
       {headers.map((header, index) => {
         const key = header.toLowerCase().replace(" ", "_"); // Create a key from the header
-        if (key == 'confirmed') {
-          return <div className="border-b border-gray-200 py-2 flex justify-center items-center mx-2">{comment[key] ? 'Yes' : 'No'}</div>
-        }
-        else if (key == 'content') {
+        if (key == 'description') {
           return (
             <div key={index} className="border-b border-gray-200 py-2 flex justify-center items-center mx-2">
-              <ExpandableText>
-                {comment[key]}
-              </ExpandableText>
+             <ExpandableText>{game[key]}</ExpandableText>
             </div>
           );
         }
-        else {
+        else if (key === 'background_image') {
           return (
             <div key={index} className="border-b border-gray-200 py-2 flex justify-center items-center mx-2">
-              {comment[key] !== undefined ? comment[key] : "N/A"} {/* Render cell dynamically */}
+              <Image query={{ hashKey: game[key], format: ImageFormat.WEBP }} />
+            </div>
+          );
+        } else {
+          return (
+            <div key={index} className="border-b border-gray-200 py-2 flex justify-center items-center mx-2">
+              {game[key] !== undefined ? game[key] : "N/A"} {/* Render cell dynamically */}
             </div>
           );
         }
       })}
-
     </>
   );
-
   return <>
     <List onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} headersCount={7} />
     <div className="mx-auto w-max mt-4">
@@ -81,4 +83,4 @@ const CommentsList = () => {
   </>
 };
 
-export default CommentsList;
+export default GamesList;

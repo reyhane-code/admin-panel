@@ -27,7 +27,7 @@ export default function useAuth() {
   const setUserIdentityIfLoggedIn = async (signal?: GenericAbortSignal) => {
     if (!isAuthenticated) return;
     try {
-      const response = await HttpRequest.get<User>("/v1/user/identity", {
+      const response = await HttpRequest.get<User>("/v1/user/admin/identity", {
         signal,
       });
       if (response?.data) {

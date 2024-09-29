@@ -12,25 +12,25 @@ const fetchArticles = async (
   perPage: number,
   search?: string
 ) => {
-  const searchParam: ISearchFilterOptions[] =
-    (search && search.length > 1)
-      ? [{
-        field: 'title',
-        operation: FilterOperationEnum.ILIKE,
-        value: `%${search}%`
-      }]
-      : articlesQuery.search!;
+  // const searchParam: ISearchFilterOptions[] =
+  //   (search && search.length > 1)
+  //     ? [{
+  //       field: 'title',
+  //       operation: FilterOperationEnum.ILIKE,
+  //       value: `%${search}%`
+  //     }]
+  //     : articlesQuery.search!;
 
-  const params = {
-    page,
-    perPage,
-    filter: articlesQuery.filter,
-    search: searchParam,
-    sortBy: articlesQuery.sortBy,
-  };
+  // const params = {
+  //   page,
+  //   perPage,
+    // filter: articlesQuery.filter,
+    // search: searchParam,
+    // sortBy: articlesQuery.sortBy,
+  // };
   try {
-    const res = await HttpRequest.get<IGetArticlesResponse>("/v1/articles/paginate", {
-      params,
+    const res = await HttpRequest.get<IGetArticlesResponse>("/v1/articles/all", {
+      // params,
     });
     return res.data;
   } catch (error) {
