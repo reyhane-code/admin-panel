@@ -47,8 +47,8 @@ const MainMenu = ({ onMenuItemSelect }: Props) => {
                             onMenuItemSelect(item.link); // Call the parent function with the selected link
                         }}
                     >
-                        <div className="w-full flex items-center justify-between">
-                            {item.label}{item.icon}
+                        <div className="w-full flex items-center justify-start gap-x-2">
+                            {item.icon}{item.label}
                         </div>
                     </Button>
                 ))}
