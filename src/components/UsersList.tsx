@@ -37,6 +37,7 @@ const UsersList = () => {
     "Active"
   ];
 
+  const onCreate = () => { }
 
 
   const renderRow = (user: any) => (
@@ -44,19 +45,19 @@ const UsersList = () => {
       {headers.map((header, index) => {
         const key = header.toLowerCase().replace(" ", "_"); // Create a key from the header
         if (key == 'active') {
-          return <div className="border-b border-gray-200 py-2 flex justify-center items-center mx-5">{user[key] ? 'Yes' : 'No'}</div>
+          return <td>{user[key] ? 'Yes' : 'No'}</td>
         }
         return (
-          <div key={index} className="border-b border-gray-200 py-2 flex justify-center items-center mx-5">
+          <td key={index}>
             {user[key] !== undefined ? user[key] : "N/A"} {/* Render cell dynamically */}
-          </div>
+          </td>
         );
       })}
     </>
   );
 
   return <>
-    <List onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} headersCount={8}/>
+    <List onCreate={onCreate} onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} />
     <div className="mx-auto w-max mt-4">
       {(data && data?.items.length >= 1) && (
         <Pagination

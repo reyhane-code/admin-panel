@@ -2,7 +2,7 @@ import { IGetFileQuery } from "../../interfaces";
 import { useObjToQueryString } from "../../hooks/useObjToQueryString";
 import { useState, useEffect } from "react";
 
-interface Props {
+interface IProps {
   altText?: string;
   className?: string;
   query?: IGetFileQuery;
@@ -16,7 +16,7 @@ function Image({
   className = "",
   src,
   defaultSrc = "/default.svg",
-}: Props) {
+}: IProps) {
   const [imgSrc, setImgSrc] = useState<string | undefined>(src);
   let source: string | undefined;
   if (query) {

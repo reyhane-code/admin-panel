@@ -1,9 +1,9 @@
-interface Props {
+interface IProps {
   text: string;
   onchange: () => void;
 }
 
-function ToggleSwitch({ text, onchange }: Props) {
+function ToggleSwitch({ text, onchange }: IProps) {
   return (
     <div className="form-control">
       <label className="label cursor-pointer">

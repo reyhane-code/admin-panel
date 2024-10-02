@@ -7,7 +7,6 @@ import GamesList from "../components/GamesList";
 import PlatformsList from "../components/PlatformsList";
 import GenresList from "../components/GenresList";
 import PublishersList from "../components/PublishersList";
-import CommentsList from "../components/CommentsList";
 
 const HomePage = () => {
   const [selectedLink, setSelectedLink] = useState("");
@@ -15,19 +14,18 @@ const HomePage = () => {
     setSelectedLink(link);
   };
   return (
-    <div className="flex justify-between items-start w-full">
-      <div className="grid grid-cols-12 w-1/4">
+    <div className="flex items-start w-full">
+      <div className="w-1/2">
         <MainMenu onMenuItemSelect={handleMenuItemSelect}></MainMenu>
       </div>
-      <div className="">
-      {selectedLink == '' && <UsersList />}
-      {selectedLink == 'users' && <UsersList />}
-      {selectedLink == 'articles' && <ArticlesList />}
-      {selectedLink == 'games' && <GamesList />}
-      {selectedLink == 'platforms' && <PlatformsList />}
-      {selectedLink == 'genres' && <GenresList />}
-      {selectedLink == 'publishers' && <PublishersList />}
-      {selectedLink == 'comments' && <CommentsList />}
+      <div className="flex flex-col">
+        {selectedLink == '' && <UsersList />}
+        {selectedLink == 'users' && <UsersList />}
+        {selectedLink == 'articles' && <ArticlesList />}
+        {selectedLink == 'games' && <GamesList />}
+        {selectedLink == 'platforms' && <PlatformsList />}
+        {selectedLink == 'genres' && <GenresList />}
+        {selectedLink == 'publishers' && <PublishersList />}
       </div>
 
     </div>

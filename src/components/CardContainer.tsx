@@ -1,10 +1,10 @@
 import { ReactNode } from "react";
 
-interface Props {
+interface IProps {
   children: ReactNode;
 }
 
-const CardContainer = ({ children }: Props) => {
+const CardContainer = ({ children }: IProps) => {
   return (
     // TODO: improve the scale
     <div className="rounded-box w-full overflow-hidden">{children}</div>

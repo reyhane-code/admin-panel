@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 import AuthModal from "../AuthModal";
 
-interface LayoutProps {
+interface LayoutIProps {
   children: ReactNode;
 }
 
-const RouterLayout = ({ children }: LayoutProps) => {
+const RouterLayout = ({ children }: LayoutIProps) => {
   return (
     <>
       {children}

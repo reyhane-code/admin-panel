@@ -8,7 +8,7 @@ import { GrArticle } from "react-icons/gr";
 import { IoGameController } from "react-icons/io5";
 import { GiPlatform } from "react-icons/gi";
 
-interface Props {
+interface IProps {
     onMenuItemSelect: (link: string) => void;
 }
 
@@ -18,16 +18,13 @@ interface MenuItem {
     icon?: any
 }
 
-const MainMenu = ({ onMenuItemSelect }: Props) => {
+const MainMenu = ({ onMenuItemSelect }: IProps) => {
     const navigate = useNavigate();
     const [error, setError] = useState<string | null>(null);
     const menuItems: MenuItem[] = [
         { label: "Users", link: "users", icon: <FaRegUser className="text-lg" /> },
         { label: "Articles", link: "articles", icon: <GrArticle className="text-lg" /> },
         { label: "Games", link: "games", icon: <IoGameController className="text-lg" /> },
-        {
-            label: "Comments", link: "comments", icon: <MdOutlineComment className="text-lg" />
-        },
         { label: "Platforms", link: "platforms", icon: <GiPlatform className="text-lg" /> },
         { label: "Genres", link: "genres" },
         { label: "Publishers", link: "publishers" }

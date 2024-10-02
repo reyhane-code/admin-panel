@@ -3,7 +3,7 @@ import { useController, useFormContext } from "react-hook-form";
 
 interface IProps {
   children?: ReactNode;
-  placeholder: string;
+  label?: string | number;
   value?: string | number;
   onChange?: (value: string) => void;
   onClick?: () => void;
@@ -13,9 +13,9 @@ interface IProps {
   rightSlot?: ReactNode
 }
 
-function TextArea({
-  placeholder,
+function FileInput({
   name,
+  label,
   children,
   value,
   onChange,
@@ -32,11 +32,14 @@ function TextArea({
   if (!control || !register) {
     return (
       <div className="flex flex-col w-full h-max">
+        <label className="text-sm mx-1">
+          {label}
+        </label>
         <div className="px-4 border border-gray-300 rounded-md flex items-center w-full min-h-10">
           {leftSlot}
-          <textarea
-            className={`grow focus:!outline-none active:!outline-none textarea textarea-bordered ${className}`}
-            placeholder={placeholder}
+          <input
+            type='file'
+            className={`grow focus:!outline-none active:!outline-none ${className} file-input file-input-bordered w-full max-w-xs`}
             value={value}
             onChange={(e) => {
               if (onChange) {
@@ -64,22 +67,24 @@ function TextArea({
 
   return (
     <div className="flex flex-col w-full h-max grow">
-      <textarea
-        className="grow w-full textarea textarea-bordered"
-        placeholder={placeholder}
-        {...field}
-        onChange={(e) => {
-          field.onChange(e); // Call react-hook-form's onChange
-          if (onChange) {
-            onChange(e.target.value); // Call custom onChange if provided
-          }
-        }}
-      />
-      {children}
-
+      <label className="input input-bordered flex flex-col items-center w-full">
+        <span className="text-sm mx-1">{label}</span>
+        <input
+          type='file'
+          className="grow w-full"
+          {...field}
+          onChange={(e) => {
+            field.onChange(e); // Call react-hook-form's onChange
+            if (onChange) {
+              onChange(e.target.value); // Call custom onChange if provided
+            }
+          }}
+        />
+        {children}
+      </label>
       <div className="w-full mt-1 flex min-h-4">
         {error && (
-          <span className="text-red-500 text-xs lg:text-sm ms-auto me-1 w-max">
+          <span className="text-red-500 text-xs lg:text-sm ms-auto me-1 w-max file-input file-input-bordered w-full max-w-xs">
             {error.message}
           </span>
         )}
@@ -88,4 +93,4 @@ function TextArea({
   );
 }
 
-export default TextArea;
+export default FileInput;

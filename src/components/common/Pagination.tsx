@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 
-interface Props {
+interface IProps {
   perPage: number;
   count: number;
   page: number;
   setPage: (page: number) => void;
 }
 
-const Pagination = ({ perPage, count, page, setPage }: Props) => {
+const Pagination = ({ perPage, count, page, setPage }: IProps) => {
   const totalPages = Math.ceil(count / perPage);
   const navigate = useNavigate();
 

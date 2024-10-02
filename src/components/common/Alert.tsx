@@ -1,9 +1,9 @@
-interface Props {
+interface IProps {
   text: string;
   color?: string;
 }
 
-function Alert({ text, color = "error" }: Props) {
+function Alert({ text, color = "error" }: IProps) {
   return (
     <div role="alert" className={`alert alert-${color} m-4 w-1/2 text-white`}>
       <svg

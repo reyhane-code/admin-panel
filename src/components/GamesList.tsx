@@ -18,7 +18,7 @@ const GamesList = () => {
   if (error) {
     return (
       <div className="container mx-auto mt-5 text-red-500">
-        Error loading articles
+        Error loading games
       </div>
     );
   }
@@ -30,6 +30,7 @@ const GamesList = () => {
     console.log('deleting')
   }
 
+  const onCreate = async () => { }
 
   const headers = [
     "ID",
@@ -47,29 +48,29 @@ const GamesList = () => {
         const key = header.toLowerCase().replace(" ", "_"); // Create a key from the header
         if (key == 'description') {
           return (
-            <div key={index} className="border-b border-gray-200 py-2 flex justify-center items-center mx-2">
-             <ExpandableText>{game[key]}</ExpandableText>
-            </div>
+            <td key={index}>
+              <ExpandableText>{game[key]}</ExpandableText>
+            </td>
           );
         }
         else if (key === 'background_image') {
           return (
-            <div key={index} className="border-b border-gray-200 py-2 flex justify-center items-center mx-2">
+            <td key={index}>
               <Image query={{ hashKey: game[key], format: ImageFormat.WEBP }} />
-            </div>
+            </td>
           );
         } else {
           return (
-            <div key={index} className="border-b border-gray-200 py-2 flex justify-center items-center mx-2">
+            <td key={index}>
               {game[key] !== undefined ? game[key] : "N/A"} {/* Render cell dynamically */}
-            </div>
+            </td>
           );
         }
       })}
     </>
   );
   return <>
-    <List onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} headersCount={7} />
+    <List onCreate={onCreate} onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} />
     <div className="mx-auto w-max mt-4">
       {(data && data?.items.length >= 1) && (
         <Pagination

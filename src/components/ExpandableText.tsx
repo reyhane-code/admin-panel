@@ -1,11 +1,11 @@
 import Button from "./common/Button";
 import { useState, ReactNode } from "react";
 
-interface Props {
+interface IProps {
   children: ReactNode; // Change from string to ReactNode
 }
 
-const ExpandableText = ({ children }: Props) => {
+const ExpandableText = ({ children }: IProps) => {
   const [expanded, setExpanded] = useState(false);
   const limit = 250;
 

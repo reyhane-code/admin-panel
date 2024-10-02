@@ -26,7 +26,7 @@ const PlatformsList = () => {
     console.log('deleting')
   }
 
-
+  const onCreate = async () => { }
   const headers = [
     "ID",
     "Name",
@@ -38,9 +38,9 @@ const PlatformsList = () => {
       {headers.map((header, index) => {
         const key = header.toLowerCase().replace(" ", "_"); // Create a key from the header
         return (
-          <div key={index} className="border-b border-gray-200 py-2 flex justify-center items-center mx-2">
+          <td key={index}>
             {platform[key] !== undefined ? platform[key] : "N/A"} {/* Render cell dynamically */}
-          </div>
+          </td>
         );
       })}
 
@@ -48,7 +48,7 @@ const PlatformsList = () => {
   );
 
   return <>
-    <List onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} headersCount={3} />
+    <List onCreate={onCreate} onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} />
     <div className="mx-auto w-max mt-4">
       {(data && data?.items.length >= 1) && (
         <Pagination

@@ -3,11 +3,11 @@ import thumbsUp from '../assets/thumbs-up.webp';
 import meh from '../assets/meh.webp';
 import Image from "./common/Image";
 
-interface Props {
+interface IProps {
     rating: number;
 }
 
-const Emoji = ({ rating }: Props) => {
+const Emoji = ({ rating }: IProps) => {
     if (rating < 3) return null;
 
     const emojiMap: { [key: number]: any } = {

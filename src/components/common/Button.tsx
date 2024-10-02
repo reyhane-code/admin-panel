@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
-interface Props {
+interface IProps {
   children: ReactNode;
   color: string;
   size?: string;
@@ -21,7 +21,7 @@ function Button({
   link,
   disabled = false,
   type,
-}: Props) {
+}: IProps) {
   return (
     <>
       {!link ? (

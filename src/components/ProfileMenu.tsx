@@ -7,7 +7,7 @@ import { FaRegUser, FaRegHeart, FaRegBookmark } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
 import useAuth from "../hooks/useAuth";
 
-interface Props {
+interface IProps {
   onMenuItemSelect: (link: string) => void;
 }
 
@@ -17,7 +17,7 @@ interface MenuItem {
   icon: any
 }
 
-const ProfileMenu = ({ onMenuItemSelect }: Props) => {
+const ProfileMenu = ({ onMenuItemSelect }: IProps) => {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
   const { logout } = useAuth()

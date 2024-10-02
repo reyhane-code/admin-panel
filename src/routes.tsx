@@ -7,16 +7,6 @@ import ProfilePage from "./pages/ProfilePage";
 import PrivateRoutes from "./components/PrivateRoutes";
 import RouterLayout from "./components/layouts/RouterLayout";
 
-// const routeBuilder = (routes: any[]) => {
-//   console.log('ry', typeof Object.values(routes),  Object.values(routes))
-//   return Object.values(routes)?.map((route: any) => ({
-//     ...route,
-//     element: <RouterLayout>{route.element}</RouterLayout>,
-//     children: route?.children?.length
-//       ? () => routeBuilder(route.children)
-//       : undefined,
-//   }));
-// };
 
 const router = createBrowserRouter([
   {

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaPen } from "react-icons/fa6";
 import { useController, useFormContext } from "react-hook-form";
 
-interface EditableInputProps {
+interface EditableInputIProps {
   name: string; // Added name prop for react-hook-form
   label: string;
   disabled?: boolean;
@@ -11,7 +11,7 @@ interface EditableInputProps {
   value?: string; // Add value prop
 }
 
-const EditableInput: React.FC<EditableInputProps> = ({
+const EditableInput: React.FC<EditableInputIProps> = ({
   name,
   label,
   disabled,

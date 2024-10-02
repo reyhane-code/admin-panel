@@ -3,7 +3,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ObjectSchema } from "yup";
 
-interface AppFormProps {
+interface AppFormIProps {
   validationSchema?: ObjectSchema<any> | any;
   initialValues?: Record<string, any>;
   children?: React.ReactNode;
@@ -12,7 +12,7 @@ interface AppFormProps {
   doFinally?: (data: any) => any;
 }
 
-const AppForm: React.FC<AppFormProps> = ({
+const AppForm: React.FC<AppFormIProps> = ({
   validationSchema,
   initialValues,
   children,

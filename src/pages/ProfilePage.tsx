@@ -2,8 +2,6 @@ import DefaultLayout from "../components/layouts/DefaultLayout";
 import { useState } from "react";
 import ProfileMenu from "../components/ProfileMenu";
 import UserInfoForm from "../components/UserInfoForm";
-import UserBookmarks from "./UserBookmarks";
-import UserLikes from "./UserLikes";
 import useAuth from "../hooks/useAuth";
 
 const ProfilePage = () => {
@@ -23,21 +21,9 @@ const ProfilePage = () => {
             />
           )}
         </div>
-        <div className="w-full grow border-solid border-2 border-gray-200 rounded-lg">
-          {selectedLink === "bookmarks" ? (
-            <UserBookmarks />
-          ) : selectedLink === "likes" ? (
-            <UserLikes />
-          ) : (
-            isAuthenticated && <UserInfoForm />
-          )}
-        </div>
+
       </div>
-      {/* <div className="avatar">
-          <div className="w-24 rounded">
-            <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-          </div>
-        </div> */}
+
     </>
   );
 };

@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { useController, useFormContext } from "react-hook-form";
 
-interface Props {
+interface IProps {
   children?: ReactNode;
   type: string;
   placeholder: string;
@@ -28,7 +28,7 @@ function TextInput({
   rightSlot,
   className,
   ...rest
-}: Props) {
+}: IProps) {
   const { control, register } = useFormContext() || { control: null }; // Provide a fallback
 
   if (!value) value = "";

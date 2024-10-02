@@ -1,6 +1,6 @@
 import React from "react";
 
-interface ModalProps {
+interface ModalIProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
@@ -10,7 +10,7 @@ interface ModalProps {
   className?: string
 }
 
-const Modal: React.FC<ModalProps> = ({
+const Modal: React.FC<ModalIProps> = ({
   isOpen,
   onClose,
   title,

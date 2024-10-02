@@ -1,4 +1,4 @@
-interface Props {
+interface IProps {
   selectText: string;
   itemsList: any[];
   showField: string;
@@ -6,7 +6,7 @@ interface Props {
   className?: string;
 }
 
-const Select: React.FC<Props> = ({
+const Select: React.FC<IProps> = ({
   className,
   selectText,
   itemsList,

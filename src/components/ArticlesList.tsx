@@ -6,10 +6,16 @@ import useApi from "../hooks/useApi";
 import Pagination from "./common/Pagination";
 import ExpandableText from "./ExpandableText";
 import { HttpRequest } from "../helpers/http-request-class.helper";
+import UpdateArticleForm from "./UpdateArticleForm";
+import { useState } from "react";
+import CreateArticleForm from "./CreateArticleForm";
 
 const ArticlesList = () => {
   const { data, error, isLoading, setPage, params } = useApi<IGetArticlesResponse, Error>('/v1/articles/all');
-
+  const [id, setId] = useState('')
+  const [isUpdating, setIsUpdating] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [isCreating, setIsCreating] = useState(false)
 
   if (isLoading) {
     return <div className="container mx-auto mt-5">Loading...</div>;
@@ -35,8 +41,17 @@ const ArticlesList = () => {
     }
   }
 
-  const onUpdate = async () => {
-    console.log('deleting')
+  const onUpdate = async (id: string) => {
+    setId(id)
+    setIsDeleting(false)
+    setIsCreating(false)
+    setIsUpdating(true)
+  }
+
+  const onCreate = async () => {
+    setIsDeleting(false)
+    setIsUpdating(false)
+    setIsCreating(true)
   }
 
 
@@ -55,24 +70,24 @@ const ArticlesList = () => {
         const key = header.toLowerCase().replace(" ", "_"); // Create a key from the header
         if (key == 'content') {
           return (
-            <div key={index} className="border-b border-gray-200 py-2 flex justify-center items-center mx-2">
+            <td key={index}>
               <ExpandableText>
                 {article[key]}
               </ExpandableText>
-            </div>
+            </td>
           );
         }
         else if (key === 'image') {
           return (
-            <div key={index} className="border-b border-gray-200 py-4 flex justify-center items-center mx-2">
+            <td key={index}>
               <Image query={{ hashKey: article[key], format: ImageFormat.WEBP }} />
-            </div>
+            </td>
           );
         } else {
           return (
-            <div key={index} className="border-b border-gray-200 py-2 flex justify-center items-center mx-2">
+            <td key={index}>
               {article[key] !== undefined ? article[key] : "N/A"} {/* Render cell dynamically */}
-            </div>
+            </td>
           );
         }
       })}
@@ -81,7 +96,10 @@ const ArticlesList = () => {
   );
 
   return <>
-    <List onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} headersCount={6} />
+    {isUpdating && <UpdateArticleForm id={id} />}
+    {isCreating && <CreateArticleForm />}
+
+    <List onCreate={onCreate} onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} />
     <div className="mx-auto w-max mt-4">
       {(data && data?.items.length >= 1) && (
         <Pagination

@@ -1,11 +1,11 @@
 import { useEffect, ReactNode } from "react";
 import useAuth from "../../hooks/useAuth";
 
-interface LayoutProps {
+interface LayoutIProps {
   children: ReactNode;
 }
 
-const AppLayout = ({ children }: LayoutProps) => {
+const AppLayout = ({ children }: LayoutIProps) => {
   const { initAuth } = useAuth();
 
   useEffect(() => {
