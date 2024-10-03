@@ -1,11 +1,18 @@
 import List from "./common/List";
 import useApi from "../hooks/useApi";
 import Pagination from "./common/Pagination";
+import { HttpRequest } from "../helpers/http-request-class.helper";
+import { useState } from "react";
+import Modal from "./common/Modal";
 import { IGetGenresResponse } from "../responses/get-genres.response";
+import UpdateGenreForm from "./UpdateGenreForm";
+import CreateGenreForm from "./CreateGenreForm";
 
 const GenresList = () => {
   const { data, error, isLoading, setPage, params } = useApi<IGetGenresResponse, Error>('/v1/genres/paginate');
 
+  const [id, setId] = useState('')
+  const [action, setAction] = useState<'Update' | 'Delete' | 'Create' | ''>('')
 
   if (isLoading) {
     return <div className="container mx-auto mt-5">Loading...</div>;
@@ -18,15 +25,74 @@ const GenresList = () => {
       </div>
     );
   }
-  const onDelete = async (id: number) => {
-    console.log('deleting')
+
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await HttpRequest.delete(`/v1/genres/${id}`)
+      if (res.status !== 200) {
+        throw new Error('something went wrong when deleting')
+      }
+
+    } catch (error) {
+      throw new Error('something went wrong')
+
+    }
+    setAction('')
+  }
+  const onDelete = async (id: string) => {
+    setId(id)
+    setAction('Delete')
   }
 
-  const onUpdate = async () => {
-    console.log('deleting')
+  const onUpdate = async (id: string) => {
+    setId(id)
+    setAction('Update')
   }
 
-  const onCreate = async () => { }
+  const handleUpdate = async (id: string, updateData: any) => {
+    const res = await HttpRequest.put(`/v1/genres/${id}`, updateData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    if (!res) {
+      throw new Error('can not update!')
+    }
+    if (res.status == 200) {
+      setAction('')
+      return res.data
+    } else {
+      return <p className="text-red-500 text-lg">Something went wrong!</p>
+    }
+  }
+
+  const onCreate = async () => {
+    setAction('Create')
+  }
+
+  const handleCreate = async (data: any) => {
+    try {
+
+      const res = await HttpRequest.post(`/v1/genres`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      if (!res) {
+
+      }
+      if (res.status == 201) {
+        setAction('')
+      }
+    } catch (error) {
+      return <p className="text-red-500 text-lg">Can not create</p>
+    }
+  }
+
+  const closeModal = () => {
+    setAction('')
+  };
+
 
   const headers = [
     "ID",
@@ -39,7 +105,7 @@ const GenresList = () => {
       {headers.map((header, index) => {
         const key = header.toLowerCase().replace(" ", "_"); // Create a key from the header
         return (
-          <td key={index} >
+          <td key={index}>
             {genre[key] !== undefined ? genre[key] : "N/A"} {/* Render cell dynamically */}
           </td>
         );
@@ -49,6 +115,40 @@ const GenresList = () => {
   );
 
   return <>
+    <Modal
+      isOpen={action == 'Create' || action == 'Update'}
+      onClose={closeModal}
+      title={`${action} Genre`}
+      id="genre-modal"
+    >
+      {action == 'Update' && <UpdateGenreForm onSubmit={handleUpdate} id={id} />}
+      {action == 'Create' && <CreateGenreForm onSubmit={handleCreate} />}
+    </Modal>
+
+    <Modal
+      isOpen={action == 'Delete'}
+      onClose={closeModal}
+      title={`${action} Genre`}
+      message="Are you sure you want to delete?"
+      id="genre-delete-modal"
+    >
+      <div className="flex space-x-5 border-b border-gray-200 py-2">
+        <button
+          className="w-15 bg-green-500 text-white px-2 py-2 rounded-sm text-md shadow-md"
+          onClick={() => {
+            handleDelete(id);
+          }}
+        >
+          Yes
+        </button>
+        <button
+          className="w-15 bg-red-500 text-white px-2 py-1 rounded-sm text-md shadow-md"
+          onClick={() => closeModal()}
+        >
+          No
+        </button>
+      </div>
+    </Modal>
     <List onCreate={onCreate} onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} />
     <div className="mx-auto w-max mt-4">
       {(data && data?.items.length >= 1) && (

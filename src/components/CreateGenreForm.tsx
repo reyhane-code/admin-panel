@@ -1,12 +1,12 @@
 import { useState } from "react"
-import PlatformFrom from "./PlatformForm"
+import GenreFrom from "./GenreForm"
 
 
 interface IProps {
     onSubmit: (data: any) => void
 }
 
-const CreatePlatformForm = ({ onSubmit }: IProps) => {
+const CreateGenreForm = ({ onSubmit }: IProps) => {
     const [isLoading, setIsLoading] = useState(false)
     const handleSubmit = async (data: any) => {
         setIsLoading(true)
@@ -19,7 +19,7 @@ const CreatePlatformForm = ({ onSubmit }: IProps) => {
     }
 
     return <div>
-        <PlatformFrom onSubmit={handleSubmit} />
+        <GenreFrom onSubmit={handleSubmit} />
     </div>
 
 
@@ -27,4 +27,4 @@ const CreatePlatformForm = ({ onSubmit }: IProps) => {
 
 
 
-export default CreatePlatformForm
+export default CreateGenreForm
