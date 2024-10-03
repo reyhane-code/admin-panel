@@ -19,9 +19,10 @@ interface IProps {
     initialImage?: string;
     initialMetacritic?: number;
     initialRatingTop?: number;
+    updating: boolean
 }
 
-export const GameForm = ({ onSubmit, initialName, initialDescription, initialImage }: IProps) => {
+export const GameForm = ({ onSubmit, initialName, initialDescription, initialImage, initialMetacritic, initialRatingTop, updating }: IProps) => {
     const [isUpdating, setIsUpdating] = useState(false);
     const [selectedGenreIds, setSelectedGenreIds] = useState<number[]>([])
     const [selectedPlatformIds, setSelectedPlatformIds] = useState<number[]>([])
@@ -55,19 +56,25 @@ export const GameForm = ({ onSubmit, initialName, initialDescription, initialIma
             validationSchema={validationSchema}
             initialValues={{
                 title: initialName ?? '',
-                content: initialDescription ?? ''
+                content: initialDescription ?? '',
+                rating_top: initialRatingTop ?? '',
+                metacritic: initialMetacritic ?? ''
             }}
         >
             <EditableInput name="name" label="Name" />
-            <TextArea name="description" placeholder="type description here..." />
+            <TextArea name="description" label="Description" placeholder="type description here..." />
             <EditableInput type="number" name="rating_top" label="Rating Top" />
             <EditableInput type="number" name="metacritic" label="Metacritic" />
 
-            <FileInput name="file" />
+            {!updating && (<>
+                <label className="text-lg mx-1">
+                    Image:
+                </label>
+
+                <FileInput name="file" /></>)}
             {/* genre drop down multiselect */}
-            <p>Select Genre(s)</p>
+            <p className="py-4 text-lg">Select Genre(s):</p>
             <select multiple className="select select-bordered w-full max-w-xs">
-                <option disabled selected>Select Genre(s)</option>
                 {genres?.map(item =>
                     <option value={item.id}
                         onSelect={() => setSelectedGenreIds([selectedGenreIds?.push(item.id)])}
@@ -83,9 +90,8 @@ export const GameForm = ({ onSubmit, initialName, initialDescription, initialIma
             </select>
 
             {/* platform drop down multiselect */}
-            <p>Select Platform(s)</p>
+            <p className="py-4 text-lg">Select Platform(s):</p>
             <select multiple className="select select-bordered w-full max-w-xs">
-                <option disabled selected>Select Platform(s)</option>
                 {platforms?.items.map(item =>
                     <option value={item.id}
                         onSelect={() => (setSelectedPlatformIds([selectedPlatformIds?.push(item.id)]))}
@@ -100,9 +106,8 @@ export const GameForm = ({ onSubmit, initialName, initialDescription, initialIma
 
             </select>
             {/* publisher drop down multiselect */}
-            <p>Select Publisher(s)</p>
+            <p className="py-4 text-lg">Select Publisher(s):</p>
             <select multiple className="select select-bordered w-full max-w-xs">
-                <option disabled selected>Select Publisher(s)</option>
                 {publishers?.items.map(item =>
                     <option value={item.id}
                         onSelect={() => (setSelectedPublisherIds([selectedPublisherIds?.push(item.id)]))}

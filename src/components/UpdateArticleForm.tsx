@@ -4,24 +4,14 @@ import { HttpRequest } from "../helpers/http-request-class.helper"
 
 
 interface IProps {
-    id: string
+    id: string;
+    onSubmit: (id: string, data: any) => void
 }
-const UpdateArticleForm = ({ id }: IProps) => {
+const UpdateArticleForm = ({ id, onSubmit }: IProps) => {
 
     const { data, isLoading, error } = useArticle(id)
-    const onSubmit = async (updataData: any) => {
-        const res = await HttpRequest.put(`/v1/articles/${id}`, updataData, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        if (!res) {
-            throw new Error('can not update!')
-        }
-        if (res.status == 200) {
-            return res.data
-        }
-
+    const handleSubmit = async (updateData: any) => {
+        onSubmit(id, updateData)
     }
     if (isLoading) {
         return <div className="container mx-auto mt-5">Loading...</div>;
@@ -35,7 +25,7 @@ const UpdateArticleForm = ({ id }: IProps) => {
         );
     }
     return <div>
-        <ArticleForm onSubmit={onSubmit} initialContent={data?.content}
+        <ArticleForm onSubmit={handleSubmit} initialContent={data?.content}
             initialTitle={data?.title}
             initialImage={data?.image}
             updating={true} />

@@ -34,7 +34,7 @@ function TextArea({
   if (!control || !register) {
     return (
       <div className="flex flex-col w-full h-max">
-        <label className="text-sm mx-1">
+        <label className="text-sm mx-1 my-1">
           {label}
         </label>
         <div className="px-4 border border-gray-300 rounded-md flex items-center w-full min-h-10">
@@ -69,7 +69,7 @@ function TextArea({
 
   return (
     <div className="flex flex-col w-full h-max grow">
-      <label className="text-lg mx-1">
+      <label className="text-lg mx-1 my-1">
         {label}:
       </label>
       <textarea

@@ -1,47 +1,25 @@
 import ArticleForm from "./ArticleForm"
-import { HttpRequest } from "../helpers/http-request-class.helper"
 import { useState } from "react"
 
 
+interface IProps {
+    onSubmit: (data: any) => void
+}
 
-const CreateArticleForm = () => {
-    const [error, setError] = useState('')
+const CreateArticleForm = ({ onSubmit }: IProps) => {
     const [isLoading, setIsLoading] = useState(false)
-    const onSubmit = async (data: any) => {
+    const handleSubmit = async (data: any) => {
         setIsLoading(true)
-        try {
-
-            const res = await HttpRequest.post(`/v1/articles`, data, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-            if (!res) {
-                setError('can not create!')
-            }
-            if (res.status == 200) {
-                return res.data
-            }
-        } catch (error) {
-            setError('create process went wrong!')
-        } finally {
-            setIsLoading(false)
-        }
+        onSubmit(data)
+        setIsLoading(false)
 
     }
     if (isLoading) {
         return <div className="container mx-auto mt-5">Loading...</div>;
     }
 
-    if (error) {
-        return (
-            <div className="container mx-auto mt-5 text-red-500">
-                {error}
-            </div>
-        );
-    }
     return <div>
-        <ArticleForm onSubmit={onSubmit} updating={false} />
+        <ArticleForm onSubmit={handleSubmit} updating={false} />
     </div>
 
 

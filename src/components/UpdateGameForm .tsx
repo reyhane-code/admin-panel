@@ -1,27 +1,16 @@
-import { HttpRequest } from "../helpers/http-request-class.helper"
 import GameForm from "./GameFrom"
 import useGame from "../hooks/useGame"
 
 
 interface IProps {
-    id: string
+    id: string;
+    onSubmit: (id: string, data: any) => Promise<void>;
 }
-const UpdateGameForm = ({ id }: IProps) => {
+const UpdateGameForm = ({ id, onSubmit }: IProps) => {
 
     const { data, isLoading, error } = useGame(id)
-    const onSubmit = async (updataData: any) => {
-        const res = await HttpRequest.put(`/v1/games/${id}`, updataData, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        if (!res) {
-            throw new Error('can not update!')
-        }
-        if (res.status == 200) {
-            return res.data
-        }
-
+    const handleSubmit = async (updateData: any) => {
+        onSubmit(id, updateData)
     }
     if (isLoading) {
         return <div className="container mx-auto mt-5">Loading...</div>;
@@ -35,12 +24,13 @@ const UpdateGameForm = ({ id }: IProps) => {
         );
     }
     return <div>
-        <GameForm onSubmit={onSubmit}
+        <GameForm onSubmit={handleSubmit}
             initialName={data?.name}
             initialDescription={data?.description}
             initialImage={data?.image}
             initialMetacritic={data?.metacritic}
-            initialRatingTop={data?.rating_top} />
+            initialRatingTop={data?.rating_top}
+            updating={true} />
     </div>
 
 

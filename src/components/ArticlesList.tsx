@@ -39,6 +39,7 @@ const ArticlesList = () => {
       throw new Error('something went wrong')
 
     }
+    setAction('')
   }
   const onDelete = async (id: string) => {
     setId(id)
@@ -50,8 +51,42 @@ const ArticlesList = () => {
     setAction('Update')
   }
 
+  const handleUpdate = async (id: string, updateData: any) => {
+    const res = await HttpRequest.put(`/v1/articles/${id}`, updateData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    if (!res) {
+      throw new Error('can not update!')
+    }
+    if (res.status == 200) {
+      setAction('')
+      return res.data
+    } else {
+      return <p className="text-red-500 text-lg">Something went wrong!</p>
+    }
+  }
+
   const onCreate = async () => {
     setAction('Create')
+  }
+
+  const handleCreate = async (data: any) => {
+    try {
+
+      const res = await HttpRequest.post(`/v1/articles`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      if (!res) {
+
+      }
+      if (res.status == 201) {
+        setAction('')
+      }
+    } catch (error) { }
   }
 
   const closeModal = () => {
@@ -107,8 +142,8 @@ const ArticlesList = () => {
       title={`${action} Article`}
       id="article-modal"
     >
-      {action == 'Update' && <UpdateArticleForm id={id} />}
-      {action == 'Create' && <CreateArticleForm />}
+      {action == 'Update' && <UpdateArticleForm onSubmit={handleUpdate} id={id} />}
+      {action == 'Create' && <CreateArticleForm onSubmit={handleCreate} />}
     </Modal>
 
     <Modal
@@ -123,7 +158,6 @@ const ArticlesList = () => {
           className="w-15 bg-green-500 text-white px-2 py-2 rounded-sm text-md shadow-md"
           onClick={() => {
             handleDelete(id);
-            setAction('')
           }}
         >
           Yes
