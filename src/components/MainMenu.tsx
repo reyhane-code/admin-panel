@@ -3,10 +3,12 @@ import Button from "./common/Button";
 import { useState } from "react";
 import Alert from "./common/Alert";
 import { FaRegUser } from "react-icons/fa";
-import { MdOutlineComment } from "react-icons/md";
 import { GrArticle } from "react-icons/gr";
 import { IoGameController } from "react-icons/io5";
 import { GiPlatform } from "react-icons/gi";
+import { BiArchiveOut } from "react-icons/bi";
+import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
+
 
 interface IProps {
     onMenuItemSelect: (link: string) => void;
@@ -22,12 +24,12 @@ const MainMenu = ({ onMenuItemSelect }: IProps) => {
     const navigate = useNavigate();
     const [error, setError] = useState<string | null>(null);
     const menuItems: MenuItem[] = [
-        { label: "Users", link: "users", icon: <FaRegUser className="text-lg" /> },
-        { label: "Articles", link: "articles", icon: <GrArticle className="text-lg" /> },
-        { label: "Games", link: "games", icon: <IoGameController className="text-lg" /> },
-        { label: "Platforms", link: "platforms", icon: <GiPlatform className="text-lg" /> },
-        { label: "Genres", link: "genres" },
-        { label: "Publishers", link: "publishers" }
+        { label: "Users", link: "users", icon: <FaRegUser className="text-xl" /> },
+        { label: "Articles", link: "articles", icon: <GrArticle className="text-xl" /> },
+        { label: "Games", link: "games", icon: <IoGameController className="text-xl" /> },
+        { label: "Platforms", link: "platforms", icon: <GiPlatform className="text-xl" /> },
+        { label: "Genres", link: "genres", icon: <GiPerspectiveDiceSixFacesRandom className="text-xl" /> },
+        { label: "Publishers", link: "publishers", icon: <BiArchiveOut className="text-xl" /> }
     ];
 
 
