@@ -1,5 +1,4 @@
 import useGenre from "../hooks/useGenre";
-import usePlatform from "../hooks/usePlatform";
 import GenreFrom from "./GenreForm";
 
 

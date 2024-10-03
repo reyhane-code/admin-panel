@@ -10,7 +10,7 @@ const useGenre = (id: string) =>
         const response = await HttpRequest.get<Genre>(`/v1/genres/${id}`);
         return response.data;
       } catch (error) {
-        throw new Error("Failed to fetch game data");
+        throw new Error("Failed to fetch genre data");
       }
     },
   });

@@ -11,7 +11,7 @@ const usePlatform = (id: string) =>
         const response = await HttpRequest.get<Platform>(`/v1/platforms/${id}`);
         return response.data;
       } catch (error) {
-        throw new Error("Failed to fetch game data");
+        throw new Error("Failed to fetch platform data");
       }
     },
   });
