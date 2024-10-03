@@ -1,14 +1,14 @@
-import useGenre from "../hooks/useGenre";
-import GenreFrom from "./GenreForm";
+import usePublisher from "../hooks/usePublisher";
+import PublisherForm from "./PublisherForm";
 
 
 interface IProps {
     id: string;
     onSubmit: (id: string, data: any) => void
 }
-const UpdateGenreForm = ({ id, onSubmit }: IProps) => {
+const UpdatePublisherForm = ({ id, onSubmit }: IProps) => {
 
-    const { data, isLoading, error } = useGenre(id)
+    const { data, isLoading, error } = usePublisher(id)
     const handleSubmit = async (updateData: any) => {
         onSubmit(id, updateData)
     }
@@ -19,12 +19,12 @@ const UpdateGenreForm = ({ id, onSubmit }: IProps) => {
     if (error) {
         return (
             <div className="container mx-auto mt-5 text-red-500">
-                Error loading genre
+                Error loading puvlisher
             </div>
         );
     }
     return <div>
-        <GenreFrom onSubmit={handleSubmit} initialName={data?.name} />
+        <PublisherForm onSubmit={handleSubmit} initialName={data?.name} />
     </div>
 
 
@@ -32,4 +32,4 @@ const UpdateGenreForm = ({ id, onSubmit }: IProps) => {
 
 
 
-export default UpdateGenreForm
+export default UpdatePublisherForm

@@ -19,7 +19,7 @@ const UpdatePlatformForm = ({ id, onSubmit }: IProps) => {
     if (error) {
         return (
             <div className="container mx-auto mt-5 text-red-500">
-                Error loading article
+                Error loading platform
             </div>
         );
     }
