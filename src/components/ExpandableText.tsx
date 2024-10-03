@@ -7,7 +7,7 @@ interface IProps {
 
 const ExpandableText = ({ children }: IProps) => {
   const [expanded, setExpanded] = useState(false);
-  const limit = 250;
+  const limit = 75;
 
   if (!children) return null;
 

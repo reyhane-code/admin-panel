@@ -11,12 +11,6 @@ interface IProps {
 }
 
 const List = ({ onCreate, headers, data, renderRow, onDelete, onUpdate }: IProps) => {
-    const handleDelete = async () => {
-        // <Modal>
-        {/*  */ }
-        {/* </Modal> */ }
-
-    }
     return (
         <div className="container mx-auto mt-5">
 
@@ -34,10 +28,13 @@ const List = ({ onCreate, headers, data, renderRow, onDelete, onUpdate }: IProps
                         <thead>
                             <tr>
                                 {headers.map((header, index) => (
-                                    <th key={index}>
+                                    <th key={index} className="text-center font-bold text-base">
                                         {header}
                                     </th>
                                 ))}
+                                <th className="text-center font-bold text-base">
+                                    Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody>

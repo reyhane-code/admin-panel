@@ -13,6 +13,7 @@ import CreateArticleForm from "./CreateArticleForm";
 const ArticlesList = () => {
   const { data, error, isLoading, setPage, params } = useApi<IGetArticlesResponse, Error>('/v1/articles/all');
   const [id, setId] = useState('')
+  const [action, setAction] = useState('')
   const [isUpdating, setIsUpdating] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
@@ -96,8 +97,10 @@ const ArticlesList = () => {
   );
 
   return <>
+    {/* Todo: modal */}
     {isUpdating && <UpdateArticleForm id={id} />}
     {isCreating && <CreateArticleForm />}
+    {/* modal */}
 
     <List onCreate={onCreate} onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} />
     <div className="mx-auto w-max mt-4">
