@@ -14,10 +14,11 @@ interface IProps {
     initialTitle?: string;
     initialContent?: string;
     initialImage?: string;
+    updating: boolean
 
 }
 
-export const ArticleForm = ({ onSubmit, initialTitle, initialContent, initialImage }: IProps) => {
+export const ArticleForm = ({ onSubmit, initialTitle, initialContent, initialImage, updating }: IProps) => {
     const [isUpdating, setIsUpdating] = useState(false);
 
     const validationSchema: ObjectSchema<any> = yup.object().shape({
@@ -46,8 +47,13 @@ export const ArticleForm = ({ onSubmit, initialTitle, initialContent, initialIma
             }}
         >
             <EditableInput name="title" label="Title" />
-            <TextArea name="content" placeholder="type your content here..."/>
-            <FileInput name="file" />
+            <TextArea label='Content' name="content" placeholder="type your content here..." />
+            {!updating && (<>
+                <label className="text-lg mx-1">
+                    Image:
+                </label>
+
+                <FileInput name="file" /></>)}
             {initialImage && < Image query={{ hashKey: initialImage, format: ImageFormat.WEBP }} />}
             <Button
                 type="submit"

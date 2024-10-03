@@ -6,10 +6,13 @@ import useApi from "../hooks/useApi";
 import { IGetGamesResponse } from "../responses/get-games.response";
 import Pagination from "./common/Pagination";
 import ExpandableText from "./ExpandableText";
+import { useState } from "react";
+import GameForm from "./GameFrom";
 
 const GamesList = () => {
   const { data, error, isLoading, params, setPage } = useApi<IGetGamesResponse, Error>('/v1/games/all');
-
+  const [id, setId] = useState('')
+  const [action, setAction] = useState<'create' | 'update' | 'delete'>()
 
   if (isLoading) {
     return <div className="container mx-auto mt-5">Loading...</div>;
@@ -30,13 +33,15 @@ const GamesList = () => {
     console.log('deleting')
   }
 
-  const onCreate = async () => { }
+  const onCreate = async () => {
+    setAction('create')
+  }
 
   const headers = [
+    "Image",
     "ID",
     "Name",
     "Description",
-    "Background Image",
     "Rating Top",
     "Metacritic",
     "User ID"
@@ -53,10 +58,10 @@ const GamesList = () => {
             </td>
           );
         }
-        else if (key === 'background_image') {
+        else if (key === 'image') {
           return (
             <td key={index}>
-              <Image query={{ hashKey: game[key], format: ImageFormat.WEBP }} />
+              <Image query={{ hashKey: game[key], format: ImageFormat.WEBP }} className="w-20 h-20" />
             </td>
           );
         } else {
@@ -70,6 +75,7 @@ const GamesList = () => {
     </>
   );
   return <>
+    {action == 'create' && <GameForm onSubmit={onCreate} />}
     <List onCreate={onCreate} onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} />
     <div className="mx-auto w-max mt-4">
       {(data && data?.items.length >= 1) && (

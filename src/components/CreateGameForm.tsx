@@ -1,17 +1,16 @@
-import ArticleForm from "./ArticleForm"
-import { HttpRequest } from "../helpers/http-request-class.helper"
 import { useState } from "react"
+import { HttpRequest } from "../helpers/http-request-class.helper"
+import GameForm from "./GameFrom"
 
+const CreateGameForm = () => {
 
-
-const CreateArticleForm = () => {
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const onSubmit = async (data: any) => {
         setIsLoading(true)
         try {
 
-            const res = await HttpRequest.post(`/v1/articles`, data, {
+            const res = await HttpRequest.post(`/v1/games`, data, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -41,7 +40,7 @@ const CreateArticleForm = () => {
         );
     }
     return <div>
-        <ArticleForm onSubmit={onSubmit} updating={false} />
+        <GameForm onSubmit={onSubmit} />
     </div>
 
 
@@ -49,4 +48,4 @@ const CreateArticleForm = () => {
 
 
 
-export default CreateArticleForm
+export default CreateGameForm

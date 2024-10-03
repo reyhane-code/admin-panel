@@ -1,11 +1,11 @@
 import React from "react";
-import Modal from "./Modal";
+import { IoAddSharp } from "react-icons/io5";
 
 interface IProps {
     headers: string[];
     data: any[];
     renderRow: (item: any, index: number) => React.ReactNode;
-    onDelete: (id: number) => void;
+    onDelete: (item: any) => void;
     onUpdate: (item: any) => void; // Pass the item to update
     onCreate: (item: any) => void;
 }
@@ -15,10 +15,10 @@ const List = ({ onCreate, headers, data, renderRow, onDelete, onUpdate }: IProps
         <div className="container mx-auto mt-5">
 
             <button
-                className="bg-green-500 text-white px-2 py-2 rounded-sm text-md shadow-md"
+                className="bg-green-400 px-2 py-2 rounded-sm text-md shadow-md"
                 onClick={onCreate}
             >
-                Add
+                <IoAddSharp className="text-white text-lg" />
             </button>
             <div>
 

@@ -4,7 +4,7 @@ interface ModalIProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  message: string;
+  message?: string;
   id: string;
   children?: React.ReactNode;
   className?: string

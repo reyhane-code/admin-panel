@@ -3,7 +3,7 @@ import { useController, useFormContext } from "react-hook-form";
 
 interface IProps {
   children?: ReactNode;
-  placeholder: string;
+  label?: string | number;
   value?: string | number;
   onChange?: (value: string) => void;
   onClick?: () => void;
@@ -11,12 +11,11 @@ interface IProps {
   className?: string;
   leftSlot?: ReactNode
   rightSlot?: ReactNode
-  label?: string
 }
 
-function TextArea({
-  placeholder,
+function RadioInput({
   name,
+  label,
   children,
   value,
   onChange,
@@ -24,7 +23,6 @@ function TextArea({
   leftSlot,
   rightSlot,
   className,
-  label,
   ...rest
 }: IProps) {
   const { control, register } = useFormContext() || { control: null }; // Provide a fallback
@@ -33,15 +31,15 @@ function TextArea({
 
   if (!control || !register) {
     return (
-      <div className="flex flex-col w-full h-max">
+      <div className="">
         <label className="text-sm mx-1">
           {label}
         </label>
-        <div className="px-4 border border-gray-300 rounded-md flex items-center w-full min-h-10">
+        <div className="">
           {leftSlot}
-          <textarea
-            className={`grow focus:!outline-none active:!outline-none textarea textarea-bordered ${className}`}
-            placeholder={placeholder}
+          <input
+            type='radio'
+            className={`radio w-2 ${className}`}
             value={value}
             onChange={(e) => {
               if (onChange) {
@@ -68,24 +66,23 @@ function TextArea({
   });
 
   return (
-    <div className="flex flex-col w-full h-max grow">
-      <label className="text-lg mx-1">
-        {label}:
+    <div className="">
+      <label className="input input-bordered flex flex-col items-center w-full">
+        <span className="text-sm mx-1">{label}</span>
+        <input
+          type='radio'
+          className="radio"
+          {...field}
+          onChange={(e) => {
+            field.onChange(e); // Call react-hook-form's onChange
+            if (onChange) {
+              onChange(e.target.value); // Call custom onChange if provided
+            }
+          }}
+        />
+        {children}
       </label>
-      <textarea
-        className="grow w-full textarea textarea-bordered"
-        placeholder={placeholder}
-        {...field}
-        onChange={(e) => {
-          field.onChange(e); // Call react-hook-form's onChange
-          if (onChange) {
-            onChange(e.target.value); // Call custom onChange if provided
-          }
-        }}
-      />
-      {children}
-
-      <div className="w-full mt-1 flex min-h-4">
+      <div className="">
         {error && (
           <span className="text-red-500 text-xs lg:text-sm ms-auto me-1 w-max">
             {error.message}
@@ -96,4 +93,4 @@ function TextArea({
   );
 }
 
-export default TextArea;
+export default RadioInput;

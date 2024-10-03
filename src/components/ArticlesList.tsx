@@ -9,14 +9,12 @@ import { HttpRequest } from "../helpers/http-request-class.helper";
 import UpdateArticleForm from "./UpdateArticleForm";
 import { useState } from "react";
 import CreateArticleForm from "./CreateArticleForm";
+import Modal from "./common/Modal";
 
 const ArticlesList = () => {
   const { data, error, isLoading, setPage, params } = useApi<IGetArticlesResponse, Error>('/v1/articles/all');
   const [id, setId] = useState('')
-  const [action, setAction] = useState('')
-  const [isUpdating, setIsUpdating] = useState(false)
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [isCreating, setIsCreating] = useState(false)
+  const [action, setAction] = useState<'Update' | 'Delete' | 'Create' | ''>('')
 
   if (isLoading) {
     return <div className="container mx-auto mt-5">Loading...</div>;
@@ -29,7 +27,8 @@ const ArticlesList = () => {
       </div>
     );
   }
-  const onDelete = async (id: number) => {
+
+  const handleDelete = async (id: string) => {
     try {
       const res = await HttpRequest.delete(`/v1/articles/${id}`)
       if (res.status !== 200) {
@@ -41,27 +40,32 @@ const ArticlesList = () => {
 
     }
   }
+  const onDelete = async (id: string) => {
+    setId(id)
+    setAction('Delete')
+  }
 
   const onUpdate = async (id: string) => {
     setId(id)
-    setIsDeleting(false)
-    setIsCreating(false)
-    setIsUpdating(true)
+    setAction('Update')
   }
 
   const onCreate = async () => {
-    setIsDeleting(false)
-    setIsUpdating(false)
-    setIsCreating(true)
+    setAction('Create')
   }
+
+  const closeModal = () => {
+    setAction('')
+  };
+
 
 
   const headers = [
+    "Image",
     "ID",
     "Title",
     "Content",
     "User ID",
-    "Image",
     "View",
   ];
 
@@ -81,7 +85,7 @@ const ArticlesList = () => {
         else if (key === 'image') {
           return (
             <td key={index}>
-              <Image query={{ hashKey: article[key], format: ImageFormat.WEBP }} />
+              <Image query={{ hashKey: article[key], format: ImageFormat.WEBP }} className="w-20 h-20" />
             </td>
           );
         } else {
@@ -97,10 +101,41 @@ const ArticlesList = () => {
   );
 
   return <>
-    {/* Todo: modal */}
-    {isUpdating && <UpdateArticleForm id={id} />}
-    {isCreating && <CreateArticleForm />}
-    {/* modal */}
+    <Modal
+      isOpen={action == 'Create' || action == 'Update'}
+      onClose={closeModal}
+      title={`${action} Article`}
+      id="article-modal"
+    >
+      {action == 'Update' && <UpdateArticleForm id={id} />}
+      {action == 'Create' && <CreateArticleForm />}
+    </Modal>
+
+    <Modal
+      isOpen={action == 'Delete'}
+      onClose={closeModal}
+      title={`${action} Article`}
+      message="Are you sure you want to delete?"
+      id="article-delete-modal"
+    >
+      <div className="flex space-x-5 border-b border-gray-200 py-2">
+        <button
+          className="w-15 bg-green-500 text-white px-2 py-2 rounded-sm text-md shadow-md"
+          onClick={() => {
+            handleDelete(id);
+            setAction('')
+          }}
+        >
+          Yes
+        </button>
+        <button
+          className="w-15 bg-red-500 text-white px-2 py-1 rounded-sm text-md shadow-md"
+          onClick={() => closeModal()}
+        >
+          No
+        </button>
+      </div>
+    </Modal>
 
     <List onCreate={onCreate} onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} />
     <div className="mx-auto w-max mt-4">

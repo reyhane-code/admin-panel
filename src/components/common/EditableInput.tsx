@@ -9,6 +9,7 @@ interface EditableInputIProps {
   className?: string;
   onChange?: (value: string) => void; // Add onChange prop
   value?: string; // Add value prop
+  type?: string
 }
 
 const EditableInput: React.FC<EditableInputIProps> = ({
@@ -18,6 +19,7 @@ const EditableInput: React.FC<EditableInputIProps> = ({
   className,
   onChange,
   value,
+  type = 'text'
 }) => {
   const { control } = useFormContext(); // Access form context
   const {
@@ -56,7 +58,7 @@ const EditableInput: React.FC<EditableInputIProps> = ({
         </div>
       ) : isEditing ? (
         <input
-          type="text"
+          type={type}
           value={value !== undefined ? value : field.value ?? ''} // Use value prop if provided
           onChange={handleInputChange}
           onBlur={handleInputBlur}

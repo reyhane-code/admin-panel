@@ -8,17 +8,30 @@ import { ImageFormat } from "../enums";
 import Image from "./common/Image";
 import FileInput from "./common/FileInput";
 import TextArea from "./common/TextArea";
-
+import usePlatforms from "../hooks/usePlatforms";
+import useGenres from "../hooks/useGenres";
+import usePublishers from "../hooks/usePublishers";
+import { IoClose } from "react-icons/io5";
 interface IProps {
     onSubmit: (data: any) => Promise<void>;
     initialName?: string;
     initialDescription?: string;
     initialImage?: string;
-
+    initialMetacritic?: number;
+    initialRatingTop?: number;
 }
 
 export const GameForm = ({ onSubmit, initialName, initialDescription, initialImage }: IProps) => {
     const [isUpdating, setIsUpdating] = useState(false);
+    const [selectedGenreIds, setSelectedGenreIds] = useState<number[]>([])
+    const [selectedPlatformIds, setSelectedPlatformIds] = useState<number[]>([])
+    const [selectedPublisherIds, setSelectedPublisherIds] = useState<number[]>([])
+
+
+
+    const { data: platforms } = usePlatforms()
+    const { data: genres } = useGenres()
+    const { data: publishers } = usePublishers()
 
     const validationSchema: ObjectSchema<any> = yup.object().shape({
         title: yup.string().required("Title is required"),
@@ -47,10 +60,62 @@ export const GameForm = ({ onSubmit, initialName, initialDescription, initialIma
         >
             <EditableInput name="name" label="Name" />
             <TextArea name="description" placeholder="type description here..." />
+            <EditableInput type="number" name="rating_top" label="Rating Top" />
+            <EditableInput type="number" name="metacritic" label="Metacritic" />
+
             <FileInput name="file" />
             {/* genre drop down multiselect */}
+            <p>Select Genre(s)</p>
+            <select multiple className="select select-bordered w-full max-w-xs">
+                <option disabled selected>Select Genre(s)</option>
+                {genres?.map(item =>
+                    <option value={item.id}
+                        onSelect={() => setSelectedGenreIds([selectedGenreIds?.push(item.id)])}
+                    >
+                        <div>
+                            {item.name}
+                        </div>
+                        <IoClose className="text-lg text-red-500"
+                            onClick={() => setSelectedGenreIds(selectedGenreIds.filter(id => id == item.id))} />
+                    </option>
+                )}
+
+            </select>
+
             {/* platform drop down multiselect */}
+            <p>Select Platform(s)</p>
+            <select multiple className="select select-bordered w-full max-w-xs">
+                <option disabled selected>Select Platform(s)</option>
+                {platforms?.items.map(item =>
+                    <option value={item.id}
+                        onSelect={() => (setSelectedPlatformIds([selectedPlatformIds?.push(item.id)]))}
+                    >
+                        <div>
+                            {item.name}
+                        </div>
+                        <IoClose className="text-lg text-red-500"
+                            onClick={() => setSelectedPlatformIds(selectedPlatformIds.filter(id => id == item.id))} />
+                    </option>
+                )}
+
+            </select>
             {/* publisher drop down multiselect */}
+            <p>Select Publisher(s)</p>
+            <select multiple className="select select-bordered w-full max-w-xs">
+                <option disabled selected>Select Publisher(s)</option>
+                {publishers?.items.map(item =>
+                    <option value={item.id}
+                        onSelect={() => (setSelectedPublisherIds([selectedPublisherIds?.push(item.id)]))}
+                    >
+                        <div>
+                            {item.name}
+                        </div>
+                        <IoClose className="text-lg text-red-500"
+                            onClick={() => setSelectedPublisherIds(selectedPublisherIds.filter(id => id == item.id))} />
+                    </option>
+                )}
+
+            </select>
             {initialImage && < Image query={{ hashKey: initialImage, format: ImageFormat.WEBP }} />}
             <Button
                 type="submit"
@@ -58,7 +123,7 @@ export const GameForm = ({ onSubmit, initialName, initialDescription, initialIma
                 className="text-lg m-2 text-blue-500"
                 disabled={isUpdating} // Disable button while updating
             >
-                {isUpdating ? "Saving..." : "Save Changes"}
+                {isUpdating ? "Saving..." : "Save"}
             </Button>
 
         </AppForm>

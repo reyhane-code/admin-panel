@@ -1,16 +1,16 @@
-import { useArticle } from "../hooks/useArticle"
-import ArticleForm from "./ArticleForm"
 import { HttpRequest } from "../helpers/http-request-class.helper"
+import GameForm from "./GameFrom"
+import useGame from "../hooks/useGame"
 
 
 interface IProps {
     id: string
 }
-const UpdateArticleForm = ({ id }: IProps) => {
+const UpdateGameForm = ({ id }: IProps) => {
 
-    const { data, isLoading, error } = useArticle(id)
+    const { data, isLoading, error } = useGame(id)
     const onSubmit = async (updataData: any) => {
-        const res = await HttpRequest.put(`/v1/articles/${id}`, updataData, {
+        const res = await HttpRequest.put(`/v1/games/${id}`, updataData, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -30,15 +30,17 @@ const UpdateArticleForm = ({ id }: IProps) => {
     if (error) {
         return (
             <div className="container mx-auto mt-5 text-red-500">
-                Error loading article
+                Error loading game
             </div>
         );
     }
     return <div>
-        <ArticleForm onSubmit={onSubmit} initialContent={data?.content}
-            initialTitle={data?.title}
+        <GameForm onSubmit={onSubmit}
+            initialName={data?.name}
+            initialDescription={data?.description}
             initialImage={data?.image}
-            updating={true} />
+            initialMetacritic={data?.metacritic}
+            initialRatingTop={data?.rating_top} />
     </div>
 
 
@@ -46,4 +48,4 @@ const UpdateArticleForm = ({ id }: IProps) => {
 
 
 
-export default UpdateArticleForm
+export default UpdateGameForm
