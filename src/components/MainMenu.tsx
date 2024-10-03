@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Button from "./common/Button";
 import { useState } from "react";
 import Alert from "./common/Alert";
@@ -10,9 +10,6 @@ import { BiArchiveOut } from "react-icons/bi";
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 
 
-interface IProps {
-    onMenuItemSelect: (link: string) => void;
-}
 
 interface MenuItem {
     label: string;
@@ -20,8 +17,7 @@ interface MenuItem {
     icon?: any
 }
 
-const MainMenu = ({ onMenuItemSelect }: IProps) => {
-    const navigate = useNavigate();
+const MainMenu = () => {
     const [error, setError] = useState<string | null>(null);
     const menuItems: MenuItem[] = [
         { label: "Users", link: "users", icon: <FaRegUser className="text-xl" /> },
@@ -36,20 +32,24 @@ const MainMenu = ({ onMenuItemSelect }: IProps) => {
     return (
         <>
             {error && <Alert text={error} />}
-            <div className="flex flex-col justify-center items-sterch w-80 max-w-250 me-8 px-6 py-2 space-y-4 shadow-md rounded-lg">
+            <div className="flex flex-col justify-center items-sterch w-80 max-w-250 me-8 mx-5 space-y-4 shadow-md rounded-lg">
                 {menuItems.map((item) => (
-                    <Button
-                        key={item.link}
-                        className="text-lg my-3 py-3 px-4 pt-2 pb-3 flex items-center justify-center space-x-3"
-                        color="primary"
-                        onClick={() => {
-                            onMenuItemSelect(item.link); // Call the parent function with the selected link
-                        }}
+                    <NavLink
+                        to={`/${item.link}`}
+                        className={({ isActive, isPending }) =>
+                            isActive ? "bg-gray-200" : ""
+                        }
                     >
-                        <div className="w-full flex items-center gap-x-2">
-                            {item.icon}{item.label}
+                        <div className="text-lg my-3 py-3 px-4 pt-2 pb-3 flex items-center justify-center space-x-3">
+                            <div className={`w-full flex items-center gap-x-2`}>
+                                {item.icon}
+                                {item.link}
+                            </div>
                         </div>
-                    </Button>
+                    </NavLink>
+
+
+
                 ))}
 
             </div>

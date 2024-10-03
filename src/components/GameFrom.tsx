@@ -28,7 +28,7 @@ export const GameForm = ({ onSubmit, initialName, initialDescription, initialIma
     const [selectedPlatformIds, setSelectedPlatformIds] = useState<number[]>([])
     const [selectedPublisherIds, setSelectedPublisherIds] = useState<number[]>([])
 
-
+    
 
     const { data: platforms } = usePlatforms()
     const { data: genres } = useGenres()
@@ -48,7 +48,7 @@ export const GameForm = ({ onSubmit, initialName, initialDescription, initialIma
     const onError = (e: any) => {
         console.log('on error infoForm', e)
     }
-    return <div className="flex w-2/3 py-4 px-6">
+    return <div className="gird grid-cols-1 gap-2 w-[40vw] max-h-[50vh] py-4 px-6">
         <AppForm
             onSubmit={handleSubmit}
             onError={onError}
@@ -77,7 +77,7 @@ export const GameForm = ({ onSubmit, initialName, initialDescription, initialIma
             <select multiple className="select select-bordered w-full max-w-xs">
                 {genres?.map(item =>
                     <option value={item.id}
-                        onSelect={() => setSelectedGenreIds([selectedGenreIds?.push(item.id)])}
+                        onSelect={(e) => setSelectedGenreIds([selectedGenreIds?.push()])}
                     >
                         <div>
                             {item.name}

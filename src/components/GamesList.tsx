@@ -171,7 +171,13 @@ const GamesList = () => {
         </button>
       </div>
     </Modal>
-    <List onCreate={onCreate} onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} />
+    <List onCreate={onCreate}
+      onDelete={onDelete} onUpdate={onUpdate}
+      headers={headers}
+      data={data?.items!!}
+      renderRow={renderRow}
+      primaryKey="slug"
+    />
     <div className="mx-auto w-max mt-4">
       {(data && data?.items.length >= 1) && (
         <Pagination

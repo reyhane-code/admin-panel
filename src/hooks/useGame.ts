@@ -1,21 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { HttpRequest } from "../helpers/http-request-class.helper";
+import { Game } from "../entities/Game";
 
-interface IGame {
-  id: number;
-  name: string;
-  slug: string;
-  description?: string;
-  image: string;
-  metacritic: number;
-  rating_top: number;
-}
-const useGame = (id: string) =>
-  useQuery<IGame, Error>({
-    queryKey: ["id", id],
+const useGame = (slug: string) =>
+  useQuery<Game, Error>({
+    queryKey: ["slug", slug],
     queryFn: async () => {
       try {
-        const response = await HttpRequest.get<IGame>(`/v1/games/find/${id}`);
+        const response = await HttpRequest.get<Game>(`/v1/games/${slug}`);
         return response.data;
       } catch (error) {
         throw new Error("Failed to fetch game data");
