@@ -6,6 +6,12 @@ import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import PrivateRoutes from "./components/PrivateRoutes";
 import RouterLayout from "./components/layouts/RouterLayout";
+import ArticlesPage from "./pages/ArticlesPage";
+import PublishersPage from "./pages/PublishersPage";
+import PlatformsPage from "./pages/PlatformsPage";
+import GenresPage from "./pages/GenresPage";
+import UsersPage from "./pages/UsersPage";
+import GamesPage from "./pages/GamesPage";
 
 
 const router = createBrowserRouter([
@@ -38,7 +44,50 @@ const router = createBrowserRouter([
           </RouterLayout>
         ),
       },
-      
+      {
+        path: "users",
+        element: (
+          <RouterLayout>
+            <UsersPage />
+          </RouterLayout>
+        ),
+      }, {
+        path: "games",
+        element: (
+          <RouterLayout>
+            <GamesPage />
+          </RouterLayout>
+        ),
+      }, {
+        path: "articles",
+        element: (
+          <RouterLayout>
+            <ArticlesPage />
+          </RouterLayout>
+        ),
+      }, {
+        path: "publishers",
+        element: (
+          <RouterLayout>
+            <PublishersPage />
+          </RouterLayout>
+        ),
+      }, {
+        path: "platforms",
+        element: (
+          <RouterLayout>
+            <PlatformsPage />
+          </RouterLayout>
+        ),
+      }, {
+        path: "genres",
+        element: (
+          <RouterLayout>
+            <GenresPage />
+          </RouterLayout>
+        ),
+      },
+
     ],
   },
   {

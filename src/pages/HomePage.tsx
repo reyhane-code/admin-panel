@@ -1,33 +1,16 @@
 // import GameHeading from "../components/GameHeading";
-import { useState } from "react";
 import MainMenu from "../components/MainMenu";
-import UsersList from "../components/UsersList";
-import ArticlesList from "../components/ArticlesList";
-import GamesList from "../components/GamesList";
-import PlatformsList from "../components/PlatformsList";
-import GenresList from "../components/GenresList";
-import PublishersList from "../components/PublishersList";
+import { useNavigate } from "react-router-dom";
+import UsersPage from "./UsersPage";
 
 const HomePage = () => {
-  const [selectedLink, setSelectedLink] = useState("");
+  const navigate = useNavigate()
   const handleMenuItemSelect = (link: string) => {
-    setSelectedLink(link);
+    navigate(link)
   };
   return (
     <div className="flex items-start w-full">
-      <div className=" w-1/4 max-width-[25rem] min-width-[16rem]">
-        <MainMenu onMenuItemSelect={handleMenuItemSelect}></MainMenu>
-      </div>
-      <div className="flex flex-col flex-grow-1">
-        {selectedLink == '' && <UsersList />}
-        {selectedLink == 'users' && <UsersList />}
-        {selectedLink == 'articles' && <ArticlesList />}
-        {selectedLink == 'games' && <GamesList />}
-        {selectedLink == 'platforms' && <PlatformsList />}
-        {selectedLink == 'genres' && <GenresList />}
-        {selectedLink == 'publishers' && <PublishersList />}
-      </div>
-
+      <UsersPage />
     </div>
 
   );
