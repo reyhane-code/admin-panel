@@ -4,28 +4,18 @@ import { ObjectSchema } from "yup";
 import * as yup from "yup";
 import EditableInput from "./common/EditableInput";
 import Button from "./common/Button";
-import { ImageFormat } from "../enums";
-import Image from "./common/Image";
-import FileInput from "./common/FileInput";
-import TextArea from "./common/TextArea";
 
 interface IProps {
     onSubmit: (data: any) => Promise<void>;
-    initialTitle?: string;
-    initialContent?: string;
-    initialImage?: string;
-    updating: boolean
+    initialName?: string;
 
 }
 
-export const ArticleForm = ({ onSubmit, initialTitle, initialContent, initialImage, updating }: IProps) => {
+export const PlatformFrom = ({ onSubmit, initialName }: IProps) => {
     const [isUpdating, setIsUpdating] = useState(false);
 
     const validationSchema: ObjectSchema<any> = yup.object().shape({
-        title: yup.string().required("Title is required"),
-        content: yup.string().required("Content is required")
-            .min(100)
-            .max(10000),
+        name: yup.string().required("Name is required"),
     });
 
     const handleSubmit = (data: any) => {
@@ -42,19 +32,10 @@ export const ArticleForm = ({ onSubmit, initialTitle, initialContent, initialIma
             doFinally={() => setIsUpdating(false)}
             validationSchema={validationSchema}
             initialValues={{
-                title: initialTitle ?? '',
-                content: initialContent ?? ''
+                name: initialName ?? ''
             }}
         >
-            <EditableInput name="title" label="Title" />
-            <TextArea label='Content' name="content" placeholder="type your content here..." />
-            {!updating && (<>
-                <label className="text-lg mx-1">
-                    Image:
-                </label>
-
-                <FileInput name="file" /></>)}
-            {initialImage && < Image query={{ hashKey: initialImage, format: ImageFormat.WEBP }} />}
+            <EditableInput name="name" label="Name" />
             <Button
                 type="submit"
                 color="primary"
@@ -70,4 +51,4 @@ export const ArticleForm = ({ onSubmit, initialTitle, initialContent, initialIma
 
 };
 
-export default ArticleForm;
+export default PlatformFrom;
