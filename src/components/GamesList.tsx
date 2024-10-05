@@ -14,6 +14,7 @@ import CreateGameForm from "./CreateGameForm";
 const GamesList = () => {
   const { data, error, isLoading, params, setPage } = useApi<IGetGamesResponse, Error>('/v1/games/all');
   const [id, setId] = useState('')
+  const [slug, setSlug] = useState('')
   const [action, setAction] = useState<'Update' | 'Delete' | 'Create' | ''>('')
 
 
@@ -46,16 +47,15 @@ const GamesList = () => {
     setAction('Delete')
   }
 
-  const onUpdate = async (id: string) => {
+  const onUpdate = async (slug: string) => {
     setAction('Update')
-    setId(id)
-
+    setSlug(slug)
 
   }
 
   const handleUpdate = async (data: any) => {
 
-    const res = await HttpRequest.put(`/v1/games/${id}`, data, {
+    const res = await HttpRequest.put(`/v1/games/${slug}`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -143,7 +143,7 @@ const GamesList = () => {
       title={`${action} Game`}
       id="game-modal"
     >
-      {action == 'Update' && <UpdateGameForm onSubmit={handleUpdate} id={id} />}
+      {action == 'Update' && <UpdateGameForm onSubmit={handleUpdate} slug={slug} />}
       {action == 'Create' && <CreateGameForm onSubmit={handleCreate} />}
     </Modal>
 

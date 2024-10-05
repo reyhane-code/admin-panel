@@ -3,14 +3,14 @@ import useGame from "../hooks/useGame"
 
 
 interface IProps {
-    id: string;
-    onSubmit: (id: string, data: any) => Promise<void>;
+    slug: string;
+    onSubmit: (slug: string, data: any) => Promise<void>;
 }
-const UpdateGameForm = ({ id, onSubmit }: IProps) => {
+const UpdateGameForm = ({ slug, onSubmit }: IProps) => {
 
-    const { data, isLoading, error } = useGame(id)
+    const { data, isLoading, error } = useGame(slug)
     const handleSubmit = async (updateData: any) => {
-        onSubmit(id, updateData)
+        onSubmit(slug, updateData)
     }
     if (isLoading) {
         return <div className="container mx-auto mt-5">Loading...</div>;
@@ -25,11 +25,11 @@ const UpdateGameForm = ({ id, onSubmit }: IProps) => {
     }
     return <div>
         <GameForm onSubmit={handleSubmit}
-            initialName={data?.name}
-            initialDescription={data?.description}
-            initialImage={data?.image}
-            initialMetacritic={data?.metacritic}
-            initialRatingTop={data?.rating_top}
+            initialName={data?.game.name}
+            initialDescription={data?.game.description}
+            initialImage={data?.game.image}
+            initialMetacritic={data?.game.metacritic}
+            initialRatingTop={data?.game.rating_top}
             updating={true} />
     </div>
 

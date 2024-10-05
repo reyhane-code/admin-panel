@@ -8,7 +8,7 @@ interface Game {
   name: string;
   description?: string;
   slug: string;
-  background_image: string;
+  image: string;
   metacritic?: number;
   rating_top?: number;
 }

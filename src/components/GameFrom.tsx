@@ -54,24 +54,26 @@ export const GameForm = ({ onSubmit, initialName, initialDescription, initialIma
         formData.append('description', data.description);
         formData.append('rating_top', data.rating_top);
         formData.append('metacritic', data.metacritic);
-    
-        // Append selected genre IDs as individual entries
-        selectedGenreIds.forEach(id => formData.append('genreIds[]', id.toString())); 
-    
-        // Append selected platform IDs as individual entries
-        selectedPlatformIds.forEach(id => formData.append('platformIds[]', id.toString())); 
-    
-        // Append selected publisher IDs as individual entries
-        selectedPublisherIds.forEach(id => formData.append('publisherIds[]', id.toString()));
-    
+
+        if (!updating) {
+            // Append selected genre IDs as individual entries
+            selectedGenreIds.forEach(id => formData.append('genreIds[]', id.toString()));
+
+            // Append selected platform IDs as individual entries
+            selectedPlatformIds.forEach(id => formData.append('platformIds[]', id.toString()));
+
+            // Append selected publisher IDs as individual entries
+            selectedPublisherIds.forEach(id => formData.append('publisherIds[]', id.toString()));
+        }
+
         if (image) {
             formData.append('image', image); // Append the file if it exists
         }
-    
+
         // Call the onSubmit function with the FormData
         return onSubmit(formData); // Make sure to pass formData instead of data
     };
-    
+
 
     const onError = (e: any) => {
         console.log('on error infoForm', e)
@@ -107,47 +109,53 @@ export const GameForm = ({ onSubmit, initialName, initialDescription, initialIma
                     />
                 </>
             )}
-            {/* Genre Multi-Select */}
-            <p className="py-4 text-lg">Select Genre(s):</p>
-            <select
-                multiple
-                className="select select-bordered w-full max-w-xs"
-                onChange={(e) => handleSelectChange(e, setSelectedGenreIds)}
-            >
-                {genres?.map(item => (
-                    <option key={item.id} value={item.id}>
-                        {item.name}
-                    </option>
-                ))}
-            </select>
 
-            {/* Platform Multi-Select */}
-            <p className="py-4 text-lg">Select Platform(s):</p>
-            <select
-                multiple
-                className="select select-bordered w-full max-w-xs"
-                onChange={(e) => handleSelectChange(e, setSelectedPlatformIds)}
-            >
-                {platforms?.items.map(item => (
-                    <option key={item.id} value={item.id}>
-                        {item.name}
-                    </option>
-                ))}
-            </select>
+            {!updating &&
+                (<>
+                    {/* Genre Multi-Select */}
+                    <p className="py-4 text-lg">Select Genre(s):</p>
+                    <select
+                        multiple
+                        className="select select-bordered w-full max-w-xs"
+                        onChange={(e) => handleSelectChange(e, setSelectedGenreIds)}
+                    >
+                        {genres?.map(item => (
+                            <option key={item.id} value={item.id}>
+                                {item.name}
+                            </option>
+                        ))}
+                    </select>
+                    {/* Platform Multi-Select */}
+                    < p className="py-4 text-lg">Select Platform(s):</p>
+                    <select
+                        multiple
+                        className="select select-bordered w-full max-w-xs"
+                        onChange={(e) => handleSelectChange(e, setSelectedPlatformIds)}
+                    >
+                        {platforms?.items.map(item => (
+                            <option key={item.id} value={item.id}>
+                                {item.name}
+                            </option>
+                        ))}
+                    </select>
 
-            {/* Publisher Multi-Select */}
-            <p className="py-4 text-lg">Select Publisher(s):</p>
-            <select
-                multiple
-                className="select select-bordered w-full max-w-xs"
-                onChange={(e) => handleSelectChange(e, setSelectedPublisherIds)}
-            >
-                {publishers?.items.map(item => (
-                    <option key={item.id} value={item.id}>
-                        {item.name}
-                    </option>
-                ))}
-            </select>
+                    {/* Publisher Multi-Select */}
+                    <p className="py-4 text-lg">Select Publisher(s):</p>
+                    <select
+                        multiple
+                        className="select select-bordered w-full max-w-xs"
+                        onChange={(e) => handleSelectChange(e, setSelectedPublisherIds)}
+                    >
+                        {publishers?.map(item => (
+                            <option key={item.id} value={item.id}>
+                                {item.name}
+                            </option>
+                        ))}
+                    </select>
+                </>
+
+                )}
+
 
             {initialImage && < Image query={{ hashKey: initialImage, format: ImageFormat.WEBP }} />}
             <Button
@@ -160,7 +168,7 @@ export const GameForm = ({ onSubmit, initialName, initialDescription, initialIma
             </Button>
 
         </AppForm>
-    </div>
+    </div >
 
 
 };

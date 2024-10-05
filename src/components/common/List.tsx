@@ -54,7 +54,7 @@ const List = <T,>({ onCreate, headers, data, renderRow, onDelete, onUpdate, prim
                                             </button>
                                             <button
                                                 className="bg-red-500 text-white px-2 py-1 rounded-sm text-md shadow-md"
-                                                onClick={() => onDelete(item[primaryKey])}
+                                                onClick={() => onDelete(item.id)}
                                             >
                                                 Delete
                                             </button>
