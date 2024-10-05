@@ -27,8 +27,7 @@ const UpdateArticleForm = ({ id, onSubmit }: IProps) => {
     return <div>
         <ArticleForm onSubmit={handleSubmit} initialContent={data?.content}
             initialTitle={data?.title}
-            initialImage={data?.image}
-            updating={true} />
+            initialImage={data?.image} />
     </div>
 
 

@@ -14,10 +14,9 @@ interface IProps {
     initialTitle?: string;
     initialContent?: string;
     initialImage?: string;
-    updating: boolean;
 }
 
-export const ArticleForm = ({ onSubmit, initialTitle, initialContent, initialImage, updating }: IProps) => {
+export const ArticleForm = ({ onSubmit, initialTitle, initialContent, initialImage }: IProps) => {
     const [isUpdating, setIsUpdating] = useState(false);
     const [image, setImage] = useState<File | null>(null); // State to hold the selected image
 
@@ -56,19 +55,17 @@ export const ArticleForm = ({ onSubmit, initialTitle, initialContent, initialIma
             >
                 <EditableInput name="title" label="Title" />
                 <TextArea label='Content' name="content" placeholder="type your content here..." />
-                {!updating && (
-                    <>
-                        <label className="text-lg mx-1">Image:</label>
-                        <FileInput
-                            name="image"
-                            onChange={(images) => {
-                                if (images) {
-                                    setImage(images[0]); // Set the selected file
-                                }
-                            }}
-                        />
-                    </>
-                )}
+                <>
+                    <label className="text-lg mx-1">Image:</label>
+                    <FileInput
+                        name="image"
+                        onChange={(images) => {
+                            if (images) {
+                                setImage(images[0]); // Set the selected file
+                            }
+                        }}
+                    />
+                </>
                 {initialImage && <Image query={{ hashKey: initialImage, format: ImageFormat.WEBP }} />}
                 <Button
                     type="submit"

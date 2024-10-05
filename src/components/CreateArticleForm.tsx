@@ -19,7 +19,7 @@ const CreateArticleForm = ({ onSubmit }: IProps) => {
     }
 
     return <div>
-        <ArticleForm onSubmit={handleSubmit} updating={false} />
+        <ArticleForm onSubmit={handleSubmit} />
     </div>
 
 

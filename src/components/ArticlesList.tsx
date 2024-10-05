@@ -53,9 +53,7 @@ const ArticlesList = () => {
 
   const handleUpdate = async (id: string, updateData: any) => {
     const res = await HttpRequest.put(`/v1/articles/${id}`, updateData, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { "Content-Type": "multipart/form-data" },
     })
     if (!res) {
       throw new Error('can not update!')
