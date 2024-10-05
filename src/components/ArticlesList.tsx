@@ -118,7 +118,11 @@ const ArticlesList = () => {
         else if (key === 'image') {
           return (
             <td key={index}>
-              <Image query={{ hashKey: article[key], format: ImageFormat.WEBP }} className="w-20 h-20" />
+              <Image
+                query={{ hashKey: article.image, format: ImageFormat.WEBP, height: 50, width: 50, quality: 100 }}
+                altText={article.title}
+                className="transform group-hover:scale-[1.05] transition-all duration-300 ease-in object-cover w-8 md:w-[4rem] mx-auto rounded-sm"
+              />
             </td>
           );
         } else {

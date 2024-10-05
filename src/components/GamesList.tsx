@@ -77,22 +77,18 @@ const GamesList = () => {
     try {
 
       const res = await HttpRequest.post(`/v1/games`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
       })
       if (!res) {
-        console.error('can not create')
+
       }
       if (res.status == 201) {
         setAction('')
-        return res.data
-
       }
     } catch (error) {
-      console.error('can not create')
+      return <p className="text-red-500 text-lg">Can not create</p>
     }
   }
+
 
   const closeModal = () => {
     setAction('')
@@ -123,7 +119,11 @@ const GamesList = () => {
         else if (key === 'image') {
           return (
             <td key={index}>
-              <Image query={{ hashKey: game[key], format: ImageFormat.WEBP }} className="w-20 h-20" />
+              <Image
+                query={{ hashKey: game.image, format: ImageFormat.WEBP, height: 50, width: 50, quality: 100 }}
+                altText={game.name}
+                className="transform group-hover:scale-[1.05] transition-all duration-300 ease-in object-cover w-8 md:w-[4rem] mx-auto rounded-sm"
+              />
             </td>
           );
         } else {

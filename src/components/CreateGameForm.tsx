@@ -1,20 +1,26 @@
-import { useState } from "react"
-import { HttpRequest } from "../helpers/http-request-class.helper"
-import GameForm from "./GameFrom"
+import { useState } from "react";
+import GameForm from "./GameFrom";
 
 interface IProps {
-    onSubmit: (item: any) => void
+    onSubmit: (data: any) => void // Ensure onSubmit returns a Promise
 }
 
 const CreateGameForm = ({ onSubmit }: IProps) => {
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
-    const [error, setError] = useState('')
-    const [isLoading, setIsLoading] = useState(false)
     const handleSubmit = async (data: any) => {
-        setIsLoading(true)
-        onSubmit(data)
-        setIsLoading(false)
-    }
+        setIsLoading(true);
+        setError(''); // Reset error state before submission
+        try {
+            onSubmit(data); // Await the onSubmit function
+        } catch (err) {
+            setError('Failed to create game. Please try again.'); // Set error message if submission fails
+        } finally {
+            setIsLoading(false); // Ensure loading state is reset
+        }
+    };
+
     if (isLoading) {
         return <div className="container mx-auto mt-5">Loading...</div>;
     }
@@ -26,13 +32,12 @@ const CreateGameForm = ({ onSubmit }: IProps) => {
             </div>
         );
     }
-    return <div>
-        <GameForm onSubmit={handleSubmit} updating={false} />
-    </div>
 
+    return (
+        <div>
+            <GameForm onSubmit={handleSubmit} updating={false} />
+        </div>
+    );
+};
 
-}
-
-
-
-export default CreateGameForm
+export default CreateGameForm;
