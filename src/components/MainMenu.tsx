@@ -33,11 +33,12 @@ const MainMenu = () => {
         <>
             {error && <Alert text={error} />}
             <div className="flex flex-col justify-center items-sterch w-80 max-w-250 me-8 mx-5 space-y-4 shadow-md rounded-lg">
-                {menuItems.map((item) => (
+                {menuItems.map((item,index) => (
                     <NavLink
+                        key={index}
                         to={`/${item.link}`}
                         className={({ isActive, isPending }) =>
-                            isActive ? "bg-gray-200" : ""
+                            isActive ? "bg-gray-100" : ""
                         }
                     >
                         <div className="text-lg my-3 py-3 px-4 pt-2 pb-3 flex items-center justify-center space-x-3">

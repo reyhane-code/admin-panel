@@ -2,58 +2,15 @@ import { ReactNode } from "react";
 import { useController, useFormContext } from "react-hook-form";
 
 interface IProps {
-  children?: ReactNode;
-  label?: string | number;
-  value?: string | number;
-  onChange?: (value: string) => void;
-  onClick?: () => void;
+  label?: string;
   name: string;
   className?: string;
-  leftSlot?: ReactNode
-  rightSlot?: ReactNode
+  children?: ReactNode;
+  onChange?: (image: FileList | null) => void; // Custom onChange prop
 }
 
-function FileInput({
-  name,
-  label,
-  children,
-  value,
-  onChange,
-  onClick,
-  leftSlot,
-  rightSlot,
-  className,
-  ...rest
-}: IProps) {
-  const { control, register } = useFormContext() || { control: null }; // Provide a fallback
-
-  if (!value) value = "";
-
-  if (!control || !register) {
-    return (
-      <div className="flex flex-col w-full h-max">
-        <label className="text-sm mx-1">
-          {label}
-        </label>
-        <div className="px-4 border border-gray-300 rounded-md flex items-center w-full min-h-10">
-          {leftSlot}
-          <input
-            type='file'
-            className={`grow focus:!outline-none active:!outline-none ${className} file-input file-input-bordered w-full max-w-xs`}
-            value={value}
-            onChange={(e) => {
-              if (onChange) {
-                onChange(e.target.value); // Call custom onChange if provided
-              }
-            }}
-            onClick={onClick}
-            {...rest}
-          />
-          {rightSlot}
-        </div>
-      </div>
-    );
-  }
+function FileInput({ name, label, className, children, onChange }: IProps) {
+  const { control } = useFormContext(); // Get control from form context
 
   // Use useController to get field and error state
   const {
@@ -62,33 +19,30 @@ function FileInput({
   } = useController({
     name,
     control,
-    defaultValue: value,
+    defaultValue: null, // Default value for file input
   });
 
   return (
-    <div className="flex flex-col w-full h-max grow">
-      <label className="input input-bordered flex flex-col items-center w-full">
-        <span className="text-sm mx-1">{label}</span>
-        <input
-          type='file'
-          className="grow w-full"
-          {...field}
-          onChange={(e) => {
-            field.onChange(e); // Call react-hook-form's onChange
-            if (onChange) {
-              onChange(e.target.value); // Call custom onChange if provided
-            }
-          }}
-        />
-        {children}
-      </label>
-      <div className="w-full mt-1 flex min-h-4">
-        {error && (
-          <span className="text-red-500 text-xs lg:text-sm ms-auto me-1 w-max file-input file-input-bordered w-full max-w-xs">
-            {error.message}
-          </span>
-        )}
-      </div>
+    <div className="flex flex-col w-full h-max">
+      {label && <label className="text-sm mx-1">{label}</label>}
+      <input
+        type="file"
+        className={`file-input file-input-bordered w-full ${className}`}
+        {...field}
+        name={name}
+        onChange={(e) => {
+          field.onChange(e); // Call react-hook-form's onChange
+          if (onChange) {
+            onChange(e.target.files); // Call custom onChange if provided
+          }
+        }}
+      />
+      {children}
+      {error && (
+        <span className="text-red-500 text-xs mt-1">
+          {error.message}
+        </span>
+      )}
     </div>
   );
 }

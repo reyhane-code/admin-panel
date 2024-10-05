@@ -76,9 +76,7 @@ const ArticlesList = () => {
     try {
 
       const res = await HttpRequest.post(`/v1/articles`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { "Content-Type": "multipart/form-data" },
       })
       if (!res) {
 
