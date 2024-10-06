@@ -7,12 +7,13 @@ import { useState } from "react";
 import Modal from "./common/Modal";
 import UpdatePublisherForm from "./UpdatePublisherForm";
 import CreatePublisherForm from "./CreatePublisherForm";
+import Publisher from "../entities/Publisher";
 
 const PublishersList = () => {
   const { data, error, isLoading, setPage, params } = useApi<IGetPublishersResponse, Error>('/v1/publishers/paginate');
 
 
-  const [id, setId] = useState('')
+  const [item, setItem] = useState<Publisher | null>()
   const [action, setAction] = useState<'Update' | 'Delete' | 'Create' | ''>('')
 
   if (isLoading) {
@@ -27,9 +28,9 @@ const PublishersList = () => {
     );
   }
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async () => {
     try {
-      const res = await HttpRequest.delete(`/v1/publishers/${id}`)
+      const res = await HttpRequest.delete(`/v1/publishers/${item?.id}`)
       if (res.status !== 200) {
         throw new Error('something went wrong when deleting')
       }
@@ -40,18 +41,18 @@ const PublishersList = () => {
     }
     setAction('')
   }
-  const onDelete = async (id: string) => {
-    setId(id)
+  const onDelete = async (item: Publisher) => {
+    setItem(item)
     setAction('Delete')
   }
 
-  const onUpdate = async (id: string) => {
-    setId(id)
+  const onUpdate = async (item: Publisher) => {
+    setItem(item)
     setAction('Update')
   }
 
-  const handleUpdate = async (id: string, updateData: any) => {
-    const res = await HttpRequest.put(`/v1/publishers/${id}`, updateData, {
+  const handleUpdate = async (updateData: any) => {
+    const res = await HttpRequest.put(`/v1/publishers/${item?.id}`, updateData, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -122,7 +123,7 @@ const PublishersList = () => {
       title={`${action} Publisher`}
       id="publisher-modal"
     >
-      {action == 'Update' && <UpdatePublisherForm onSubmit={handleUpdate} id={id} />}
+      {action == 'Update' && <UpdatePublisherForm onSubmit={handleUpdate} publisher={item!} />}
       {action == 'Create' && <CreatePublisherForm onSubmit={handleCreate} />}
     </Modal>
 
@@ -137,7 +138,7 @@ const PublishersList = () => {
         <button
           className="w-15 bg-green-500 text-white px-2 py-2 rounded-sm text-md shadow-md"
           onClick={() => {
-            handleDelete(id);
+            handleDelete();
           }}
         >
           Yes

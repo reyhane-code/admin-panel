@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { HttpRequest } from "../helpers/http-request-class.helper";
 import Publisher from "../entities/Publisher";
 
-const usePublisher = (id: string) =>
+const usePublisher = (id: number) =>
   useQuery<Publisher, Error>({
     queryKey: ["id", id],
     queryFn: async () => {
