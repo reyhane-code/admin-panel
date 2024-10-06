@@ -1,16 +1,17 @@
+import Genre from "../entities/Genre";
 import useGenre from "../hooks/useGenre";
 import GenreFrom from "./GenreForm";
 
 
 interface IProps {
-    id: string;
-    onSubmit: (id: string, data: any) => void
+    genre: Genre;
+    onSubmit: ( data: any) => void
 }
-const UpdateGenreForm = ({ id, onSubmit }: IProps) => {
+const UpdateGenreForm = ({ genre, onSubmit }: IProps) => {
 
-    const { data, isLoading, error } = useGenre(id)
+    const { data, isLoading, error } = useGenre(genre.id)
     const handleSubmit = async (updateData: any) => {
-        onSubmit(id, updateData)
+        onSubmit(updateData)
     }
     if (isLoading) {
         return <div className="container mx-auto mt-5">Loading...</div>;

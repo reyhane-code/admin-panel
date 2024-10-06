@@ -7,11 +7,12 @@ import Modal from "./common/Modal";
 import { IGetGenresResponse } from "../responses/get-genres.response";
 import UpdateGenreForm from "./UpdateGenreForm";
 import CreateGenreForm from "./CreateGenreForm";
+import Genre from "../entities/Genre";
 
 const GenresList = () => {
   const { data, error, isLoading, setPage, params } = useApi<IGetGenresResponse, Error>('/v1/genres/paginate');
 
-  const [id, setId] = useState('')
+  const [item, setItem] = useState<Genre | null>()
   const [action, setAction] = useState<'Update' | 'Delete' | 'Create' | ''>('')
 
   if (isLoading) {
@@ -26,9 +27,9 @@ const GenresList = () => {
     );
   }
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async () => {
     try {
-      const res = await HttpRequest.delete(`/v1/genres/${id}`)
+      const res = await HttpRequest.delete(`/v1/genres/${item?.id}`)
       if (res.status !== 200) {
         throw new Error('something went wrong when deleting')
       }
@@ -39,18 +40,18 @@ const GenresList = () => {
     }
     setAction('')
   }
-  const onDelete = async (id: string) => {
-    setId(id)
+  const onDelete = async (item: Genre) => {
+    setItem(item)
     setAction('Delete')
   }
 
-  const onUpdate = async (id: string) => {
-    setId(id)
+  const onUpdate = async (item: Genre) => {
+    setItem(item)
     setAction('Update')
   }
 
-  const handleUpdate = async (id: string, updateData: any) => {
-    const res = await HttpRequest.put(`/v1/genres/${id}`, updateData, {
+  const handleUpdate = async (updateData: any) => {
+    const res = await HttpRequest.put(`/v1/genres/${item?.id}`, updateData, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -121,7 +122,7 @@ const GenresList = () => {
       title={`${action} Genre`}
       id="genre-modal"
     >
-      {action == 'Update' && <UpdateGenreForm onSubmit={handleUpdate} id={id} />}
+      {action == 'Update' && <UpdateGenreForm onSubmit={handleUpdate} genre={item!} />}
       {action == 'Create' && <CreateGenreForm onSubmit={handleCreate} />}
     </Modal>
 
@@ -136,7 +137,7 @@ const GenresList = () => {
         <button
           className="w-15 bg-green-500 text-white px-2 py-2 rounded-sm text-md shadow-md"
           onClick={() => {
-            handleDelete(id);
+            handleDelete();
           }}
         >
           Yes

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import Genre from "../entities/Genre";
 import { HttpRequest } from "../helpers/http-request-class.helper";
 
-const useGenre = (id: string) =>
+const useGenre = (id: number) =>
   useQuery<Genre, Error>({
     queryKey: ["id", id],
     queryFn: async () => {
