@@ -1,16 +1,17 @@
 import PlatformFrom from "./PlatformForm";
 import usePlatform from "../hooks/usePlatform";
+import Platform from "../entities/Platform";
 
 
 interface IProps {
-    id: string;
-    onSubmit: (id: string, data: any) => void
+    platform: Platform;
+    onSubmit: (data: any) => void
 }
-const UpdatePlatformForm = ({ id, onSubmit }: IProps) => {
+const UpdatePlatformForm = ({ platform, onSubmit }: IProps) => {
 
-    const { data, isLoading, error } = usePlatform(id)
+    const { data, isLoading, error } = usePlatform(platform.id)
     const handleSubmit = async (updateData: any) => {
-        onSubmit(id, updateData)
+        onSubmit(updateData)
     }
     if (isLoading) {
         return <div className="container mx-auto mt-5">Loading...</div>;

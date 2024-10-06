@@ -3,7 +3,7 @@ import Platform from "../entities/Platform";
 import { HttpRequest } from "../helpers/http-request-class.helper";
 
 
-const usePlatform = (id: string) =>
+const usePlatform = (id: number) =>
   useQuery<Platform, Error>({
     queryKey: ["id", id],
     queryFn: async () => {

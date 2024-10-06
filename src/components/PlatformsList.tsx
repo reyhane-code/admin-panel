@@ -7,11 +7,12 @@ import { useState } from "react";
 import Modal from "./common/Modal";
 import UpdatePlatformForm from "./UpdatePlatformForm";
 import CreatePlatformForm from "./CreatePlatformForm";
+import Platform from "../entities/Platform";
 
 const PlatformsList = () => {
   const { data, error, isLoading, setPage, params } = useApi<IGetPlatformsResponse, Error>('/v1/platforms/paginate');
 
-  const [id, setId] = useState('')
+  const [item, setItem] = useState<Platform | null>()
   const [action, setAction] = useState<'Update' | 'Delete' | 'Create' | ''>('')
 
   if (isLoading) {
@@ -26,9 +27,9 @@ const PlatformsList = () => {
     );
   }
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async () => {
     try {
-      const res = await HttpRequest.delete(`/v1/platforms/${id}`)
+      const res = await HttpRequest.delete(`/v1/platforms/${item?.id}`)
       if (res.status !== 200) {
         throw new Error('something went wrong when deleting')
       }
@@ -39,18 +40,18 @@ const PlatformsList = () => {
     }
     setAction('')
   }
-  const onDelete = async (id: string) => {
-    setId(id)
+  const onDelete = async (item: Platform) => {
+    setItem(item)
     setAction('Delete')
   }
 
-  const onUpdate = async (id: string) => {
-    setId(id)
+  const onUpdate = async (item: Platform) => {
+    setItem(item)
     setAction('Update')
   }
 
-  const handleUpdate = async (id: string, updateData: any) => {
-    const res = await HttpRequest.put(`/v1/platforms/${id}`, updateData, {
+  const handleUpdate = async (updateData: any) => {
+    const res = await HttpRequest.put(`/v1/platforms/${item?.id}`, updateData, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -121,7 +122,7 @@ const PlatformsList = () => {
       title={`${action} Platform`}
       id="platform-modal"
     >
-      {action == 'Update' && <UpdatePlatformForm onSubmit={handleUpdate} id={id} />}
+      {action == 'Update' && <UpdatePlatformForm onSubmit={handleUpdate} platform={item!} />}
       {action == 'Create' && <CreatePlatformForm onSubmit={handleCreate} />}
     </Modal>
 
@@ -136,7 +137,7 @@ const PlatformsList = () => {
         <button
           className="w-15 bg-green-500 text-white px-2 py-2 rounded-sm text-md shadow-md"
           onClick={() => {
-            handleDelete(id);
+            handleDelete();
           }}
         >
           Yes
