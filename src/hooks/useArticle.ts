@@ -3,7 +3,7 @@ import Article from "../entities/Article";
 import { HttpRequest } from "../helpers/http-request-class.helper";
 
 
-export const useArticle = (id: string) =>
+export const useArticle = (id: number) =>
   useQuery<Article, Error>({
     queryKey: ["id", id],
     queryFn: async () => {

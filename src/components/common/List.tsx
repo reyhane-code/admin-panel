@@ -8,10 +8,9 @@ interface IProps<T> {
     onDelete: (item: T | any) => void;
     onUpdate: (item: T | any) => void; // Pass the item to update
     onCreate: (item: T | any) => void;
-    primaryKey?: string
 }
 
-const List = <T,>({ onCreate, headers, data, renderRow, onDelete, onUpdate, primaryKey = 'id' }: IProps<T>) => {
+const List = <T,>({ onCreate, headers, data, renderRow, onDelete, onUpdate }: IProps<T>) => {
     return (
         <div className="container mx-auto mt-5">
 
@@ -48,13 +47,13 @@ const List = <T,>({ onCreate, headers, data, renderRow, onDelete, onUpdate, prim
                                         <div className="col-span-full flex space-x-2 border-b border-gray-200 py-2">
                                             <button
                                                 className="bg-blue-500 text-white px-2 py-2 rounded-sm text-md shadow-md"
-                                                onClick={() => onUpdate(item[primaryKey])} // Pass the item to onUpdate
+                                                onClick={() => onUpdate(item)} // Pass the item to onUpdate
                                             >
                                                 Update
                                             </button>
                                             <button
                                                 className="bg-red-500 text-white px-2 py-1 rounded-sm text-md shadow-md"
-                                                onClick={() => onDelete(item.id)}
+                                                onClick={() => onDelete(item)}
                                             >
                                                 Delete
                                             </button>

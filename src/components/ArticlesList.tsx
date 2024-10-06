@@ -10,10 +10,11 @@ import UpdateArticleForm from "./UpdateArticleForm";
 import { useState } from "react";
 import CreateArticleForm from "./CreateArticleForm";
 import Modal from "./common/Modal";
+import Article from "../entities/Article";
 
 const ArticlesList = () => {
   const { data, error, isLoading, setPage, params } = useApi<IGetArticlesResponse, Error>('/v1/articles/all');
-  const [id, setId] = useState('')
+  const [item, setItem] = useState<Article | null>()
   const [action, setAction] = useState<'Update' | 'Delete' | 'Create' | ''>('')
 
   if (isLoading) {
@@ -28,9 +29,9 @@ const ArticlesList = () => {
     );
   }
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (item:Article) => {
     try {
-      const res = await HttpRequest.delete(`/v1/articles/${id}`)
+      const res = await HttpRequest.delete(`/v1/articles/${item.id}`)
       if (res.status !== 200) {
         throw new Error('something went wrong when deleting')
       }
@@ -41,18 +42,18 @@ const ArticlesList = () => {
     }
     setAction('')
   }
-  const onDelete = async (id: string) => {
-    setId(id)
+  const onDelete = async (item: Article) => {
+    setItem(item)
     setAction('Delete')
   }
 
-  const onUpdate = async (id: string) => {
-    setId(id)
+  const onUpdate = async (item: Article) => {
+    setItem(item)
     setAction('Update')
   }
 
-  const handleUpdate = async (id: string, updateData: any) => {
-    const res = await HttpRequest.put(`/v1/articles/${id}`, updateData, {
+  const handleUpdate = async (updateData: any) => {
+    const res = await HttpRequest.put(`/v1/articles/${item?.id}`, updateData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
     if (!res) {
@@ -142,7 +143,7 @@ const ArticlesList = () => {
       title={`${action} Article`}
       id="article-modal"
     >
-      {action == 'Update' && <UpdateArticleForm onSubmit={handleUpdate} id={id} />}
+      {action == 'Update' && <UpdateArticleForm onSubmit={handleUpdate} article={item!} />}
       {action == 'Create' && <CreateArticleForm onSubmit={handleCreate} />}
     </Modal>
 
@@ -157,7 +158,7 @@ const ArticlesList = () => {
         <button
           className="w-15 bg-green-500 text-white px-2 py-2 rounded-sm text-md shadow-md"
           onClick={() => {
-            handleDelete(id);
+            handleDelete(item!);
           }}
         >
           Yes
@@ -171,7 +172,7 @@ const ArticlesList = () => {
       </div>
     </Modal>
 
-    <List onCreate={onCreate} onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} />
+    <List<Article> onCreate={onCreate} onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} />
     <div className="mx-auto w-max mt-4">
       {(data && data?.items.length >= 1) && (
         <Pagination

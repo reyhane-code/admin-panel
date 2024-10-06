@@ -1,17 +1,17 @@
 import { useArticle } from "../hooks/useArticle"
 import ArticleForm from "./ArticleForm"
-import { HttpRequest } from "../helpers/http-request-class.helper"
+import Article from "../entities/Article"
 
 
 interface IProps {
-    id: string;
-    onSubmit: (id: string, data: any) => void
+    article: Article;
+    onSubmit: (data: any) => void
 }
-const UpdateArticleForm = ({ id, onSubmit }: IProps) => {
+const UpdateArticleForm = ({ article, onSubmit }: IProps) => {
 
-    const { data, isLoading, error } = useArticle(id)
+    const { data, isLoading, error } = useArticle(article.id)
     const handleSubmit = async (updateData: any) => {
-        onSubmit(id, updateData)
+        onSubmit(updateData)
     }
     if (isLoading) {
         return <div className="container mx-auto mt-5">Loading...</div>;

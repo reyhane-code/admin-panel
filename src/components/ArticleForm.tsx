@@ -55,8 +55,13 @@ export const ArticleForm = ({ onSubmit, initialTitle, initialContent, initialIma
             >
                 <EditableInput name="title" label="Title" />
                 <TextArea label='Content' name="content" placeholder="type your content here..." />
+                {/* {initialImage && <Image
+                    query={{ hashKey: initialImage, format: ImageFormat.WEBP, height: 70, width: 70, quality: 90 }}
+                    altText={initialTitle}
+                    className="transform group-hover:scale-[1.05] transition-all duration-300 ease-in object-cover w-8 md:w-[4rem] mx-auto rounded-sm"
+                />} */}
                 <>
-                    <label className="text-lg mx-1">Image:</label>
+                    <label className="text-lg mx-1 mt-2">Image:</label>
                     <FileInput
                         name="image"
                         onChange={(images) => {
@@ -66,7 +71,6 @@ export const ArticleForm = ({ onSubmit, initialTitle, initialContent, initialIma
                         }}
                     />
                 </>
-                {initialImage && <Image query={{ hashKey: initialImage, format: ImageFormat.WEBP }} />}
                 <Button
                     type="submit"
                     color="primary"
