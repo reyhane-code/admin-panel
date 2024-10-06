@@ -10,6 +10,7 @@ interface AppFormIProps {
   onSubmit: (data: any) => Promise<void>;
   onError?: (error: any) => any;
   doFinally?: (data: any) => any;
+  className?: string
 }
 
 const AppForm: React.FC<AppFormIProps> = ({
@@ -19,6 +20,7 @@ const AppForm: React.FC<AppFormIProps> = ({
   onSubmit,
   onError,
   doFinally,
+  className
 }) => {
   const methods = useForm({
     resolver: validationSchema ? yupResolver(validationSchema) : undefined,
@@ -31,7 +33,7 @@ const AppForm: React.FC<AppFormIProps> = ({
     try {
       await onSubmit(data);
     } catch (error: any) {
-      try{
+      try {
         console.log('error', error)
         const response = error?.response;
         const data = response?.data?.data;
@@ -48,10 +50,10 @@ const AppForm: React.FC<AppFormIProps> = ({
         if (typeof onError === "function") {
           onError(error);
         }
-      } catch(err: any){
+      } catch (err: any) {
         console.log('err on handel errors AppFrom')
       }
-      
+
     } finally {
       if (typeof doFinally === "function") {
         doFinally(data);
@@ -61,7 +63,7 @@ const AppForm: React.FC<AppFormIProps> = ({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(handleFormSubmit)}>
+      <form onSubmit={handleSubmit(handleFormSubmit)} className={className}>
         <Suspense fallback={<div>Loading...</div>}>
           {children}
         </Suspense>

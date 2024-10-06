@@ -8,7 +8,7 @@ export const useArticle = (id: number) =>
     queryKey: ["id", id],
     queryFn: async () => {
       try {
-        const response = await HttpRequest.get<Article>(`/v1/articles/find/${id}`);
+        const response = await HttpRequest.get<Article>(`/v1/articles/admin/${id}`);
         return response.data;
       } catch (error) {
         throw new Error("Failed to fetch article data");
