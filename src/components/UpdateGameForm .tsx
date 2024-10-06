@@ -1,16 +1,17 @@
 import GameForm from "./GameFrom"
 import useGame from "../hooks/useGame"
+import { Game } from "../entities/Game";
 
 
 interface IProps {
-    slug: string;
-    onSubmit: (slug: string, data: any) => Promise<void>;
+    game: Game
+    onSubmit: (data: any) => Promise<void>;
 }
-const UpdateGameForm = ({ slug, onSubmit }: IProps) => {
+const UpdateGameForm = ({ game, onSubmit }: IProps) => {
 
-    const { data, isLoading, error } = useGame(slug)
+    const { data, isLoading, error } = useGame(game.slug)
     const handleSubmit = async (updateData: any) => {
-        onSubmit(slug, updateData)
+        onSubmit(updateData)
     }
     if (isLoading) {
         return <div className="container mx-auto mt-5">Loading...</div>;
@@ -23,7 +24,7 @@ const UpdateGameForm = ({ slug, onSubmit }: IProps) => {
             </div>
         );
     }
-    return <div>
+    return <div className="w-full">
         <GameForm onSubmit={handleSubmit}
             initialName={data?.game.name}
             initialDescription={data?.game.description}

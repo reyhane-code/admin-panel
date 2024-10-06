@@ -10,11 +10,11 @@ import { HttpRequest } from "../helpers/http-request-class.helper";
 import Modal from "./common/Modal";
 import UpdateGameForm from "./UpdateGameForm ";
 import CreateGameForm from "./CreateGameForm";
+import { Game } from "../entities/Game";
 
 const GamesList = () => {
   const { data, error, isLoading, params, setPage } = useApi<IGetGamesResponse, Error>('/v1/games/all');
-  const [id, setId] = useState('')
-  const [slug, setSlug] = useState('')
+  const [item, setItem] = useState<Game | null>()
   const [action, setAction] = useState<'Update' | 'Delete' | 'Create' | ''>('')
 
 
@@ -29,9 +29,9 @@ const GamesList = () => {
       </div>
     );
   }
-  const handleDelete = async (id: string) => {
+  const handleDelete = async () => {
     try {
-      const res = await HttpRequest.delete(`/v1/games/${id}`)
+      const res = await HttpRequest.delete(`/v1/games/${item?.id}`)
       if (res.status !== 200) {
         throw new Error('something went wrong when deleting')
       }
@@ -42,24 +42,18 @@ const GamesList = () => {
     }
     setAction('')
   }
-  const onDelete = async (id: string) => {
-    setId(id)
+  const onDelete = async (item: Game) => {
+    setItem(item)
     setAction('Delete')
   }
 
-  const onUpdate = async (slug: string) => {
+  const onUpdate = async (item: Game) => {
+    setItem(item)
     setAction('Update')
-    setSlug(slug)
-
   }
 
   const handleUpdate = async (data: any) => {
-
-    const res = await HttpRequest.put(`/v1/games/${slug}`, data, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const res = await HttpRequest.put(`/v1/games/${item?.id}`, data)
     if (!res) {
       throw new Error('can not update!')
     }
@@ -121,7 +115,7 @@ const GamesList = () => {
             <td key={index}>
               <Image
                 query={{ hashKey: game.image, format: ImageFormat.WEBP, height: 50, width: 50, quality: 100 }}
-                altText={game.name}
+                altText={game.title}
                 className="transform group-hover:scale-[1.05] transition-all duration-300 ease-in object-cover w-8 md:w-[4rem] mx-auto rounded-sm"
               />
             </td>
@@ -143,7 +137,7 @@ const GamesList = () => {
       title={`${action} Game`}
       id="game-modal"
     >
-      {action == 'Update' && <UpdateGameForm onSubmit={handleUpdate} slug={slug} />}
+      {action == 'Update' && <UpdateGameForm onSubmit={handleUpdate} game={item!} />}
       {action == 'Create' && <CreateGameForm onSubmit={handleCreate} />}
     </Modal>
 
@@ -158,7 +152,7 @@ const GamesList = () => {
         <button
           className="w-15 bg-green-500 text-white px-2 py-2 rounded-sm text-md shadow-md"
           onClick={() => {
-            handleDelete(id);
+            handleDelete();
           }}
         >
           Yes
@@ -171,12 +165,11 @@ const GamesList = () => {
         </button>
       </div>
     </Modal>
-    <List onCreate={onCreate}
+    <List<Game> onCreate={onCreate}
       onDelete={onDelete} onUpdate={onUpdate}
       headers={headers}
-      data={data?.items!!}
+      data={data?.items!}
       renderRow={renderRow}
-      primaryKey="slug"
     />
     <div className="mx-auto w-max mt-4">
       {(data && data?.items.length >= 1) && (
