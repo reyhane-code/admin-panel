@@ -10,7 +10,6 @@ import ArticlesPage from "./pages/ArticlesPage";
 import PublishersPage from "./pages/PublishersPage";
 import PlatformsPage from "./pages/PlatformsPage";
 import GenresPage from "./pages/GenresPage";
-import UsersPage from "./pages/UsersPage";
 import GamesPage from "./pages/GamesPage";
 
 
@@ -45,13 +44,6 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "users",
-        element: (
-          <RouterLayout>
-            <UsersPage />
-          </RouterLayout>
-        ),
-      }, {
         path: "games",
         element: (
           <RouterLayout>
