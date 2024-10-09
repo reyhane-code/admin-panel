@@ -2,8 +2,16 @@ import List from "./common/List";
 import Pagination from "./common/Pagination";
 import useApi from "../hooks/useApi";
 import { IGetUsersResponse } from "../responses/get-users.response";
+import { HttpRequest } from "../helpers/http-request-class.helper";
+import User from "../entities/User";
+import { useState } from "react";
+import Modal from "./common/Modal";
+import UpdateUserForm from "./UpdateUserForm";
+import CreateUserForm from "./CreateUserForm";
 const UsersList = () => {
   const { data, error, isLoading, setPage, params } = useApi<IGetUsersResponse, Error>('/v1/user');
+  const [item, setItem] = useState<User | null>()
+  const [action, setAction] = useState<'Update' | 'Delete' | 'Create' | ''>('')
 
 
   if (isLoading) {
@@ -17,14 +25,50 @@ const UsersList = () => {
       </div>
     );
   }
-  const onDelete = async (id: number) => {
-    console.log('deleting')
+
+  const onCreate = async () => {
+    setAction('Create')
   }
 
-  const onUpdate = async () => {
-    console.log('updating')
+  const handleCreate = async (data: any) => {
+    try {
+
+      const res = await HttpRequest.post(`/v1/user`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      if (!res) {
+
+      }
+      if (res.status == 201) {
+        setAction('')
+      }
+    } catch (error) {
+      return <p className="text-red-500 text-lg">Can not create</p>
+    }
   }
 
+
+  const onUpdate = async (item: User) => {
+    setItem(item)
+    setAction('Update')
+  }
+
+  const handleUpdate = async (data: any) => {
+    try {
+      const res = await HttpRequest.put(`/v1/user/admin/${item?.id}`, data)
+      if (res.status == 200) {
+        setAction('')
+      }
+      if (!res) {
+        throw new Error('can not update!')
+      }
+    } catch (error) {
+      throw new Error('something went wrong!')
+    }
+
+  }
 
   const headers = [
     "ID",
@@ -37,7 +81,6 @@ const UsersList = () => {
     "Active"
   ];
 
-  const onCreate = () => { }
 
 
   const renderRow = (user: any) => (
@@ -55,9 +98,23 @@ const UsersList = () => {
       })}
     </>
   );
-
+  const closeModal = () => {
+    setAction('')
+  };
   return <>
-    <List onCreate={onCreate} onDelete={onDelete} onUpdate={onUpdate} headers={headers} data={data?.items!!} renderRow={renderRow} />
+    <Modal
+      isOpen={action == 'Create' || action == 'Update'}
+      onClose={closeModal}
+      title={`${action} Game`}
+      id="game-modal"
+    >
+      {action == 'Update' && <UpdateUserForm onSubmit={handleUpdate} user={item!} />}
+      {action == 'Create' && <CreateUserForm onSubmit={handleCreate} />}
+    </Modal>
+    <List
+      onUpdate={onUpdate}
+      onCreate={onCreate} headers={headers} data={data?.items!!} renderRow={renderRow}
+      disableDelete={true} />
     <div className="mx-auto w-max mt-4">
       {(data && data?.items.length >= 1) && (
         <Pagination

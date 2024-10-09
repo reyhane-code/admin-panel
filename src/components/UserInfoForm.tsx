@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useUser from "../hooks/useUser";
+import useIdentity from "../hooks/useIdentity";
 import { HttpRequest } from "../helpers/http-request-class.helper";
 import Alert from "./common/Alert";
 import EditableInput from "./common/EditableInput";
@@ -13,7 +13,7 @@ import * as yup from "yup";
 
 
 function UserInfoForm() {
-  const { data: user, error, isLoading } = useUser();
+  const { data: user, error, isLoading } = useIdentity();
   const phone = user?.phone;
   const setIdentity = useAuthStore((s) => s.setIdentity);
   const [updateError, setUpdateError] = useState<string | null>(null);

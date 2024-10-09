@@ -21,7 +21,7 @@ const Modal: React.FC<ModalIProps> = ({
   ...rest
 }) => {
   return (
-    <div className={`flex flex-col p-4 relative ${className}`} id={id} {...rest}>
+    <div className={`flex flex-col p-4 relative w-full ${className}`} id={id} {...rest}>
 
       {/* Modal dialog */}
       {isOpen && (
