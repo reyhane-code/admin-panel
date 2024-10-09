@@ -36,7 +36,7 @@ const List = <T,>({ onCreate, headers, data, renderRow, onDelete, onUpdate, disa
         }
         if (!disableUpdate && typeof onUpdate == 'function') {
             items.push({
-                icon: <MdOutlineEdit className="text-xl"/>,
+                icon: <MdOutlineEdit className="text-xl" />,
                 action: handleUpdate,
                 title: "update"
             })
@@ -78,9 +78,9 @@ const List = <T,>({ onCreate, headers, data, renderRow, onDelete, onUpdate, disa
                                 data.map((item: any, index: number) => (
                                     <tr key={index}>
                                         {renderRow(item, index)}
-                                        <Menu items={actionsList} render={(item) => (
-                                            <button className="px-2 py-2" onClick={item.action} title={item.title}>
-                                                {item.icon}
+                                        <Menu items={actionsList} render={(action) => (
+                                            <button className="px-2 py-2" onClick={() => action.action(item)} title={action.title}>
+                                                {action.icon}
                                             </button>
                                         )}></Menu>
                                     </tr>
