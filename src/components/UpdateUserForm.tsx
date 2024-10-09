@@ -30,7 +30,9 @@ const UpdateUserForm = ({ user, onSubmit }: IProps) => {
             initialFirstName={data.first_name}
             initialLastName={data.last_name}
             initialUsername={data.username}
-            initialRole={data.role} />
+            initialRole={data.role}
+            updating={true} />
+
     </div>
 
 

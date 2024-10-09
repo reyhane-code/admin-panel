@@ -13,6 +13,7 @@ interface IProps {
     initialLastName?: string;
     initialRole?: string;
     initialActiveState?: boolean;
+    updating: boolean
 }
 
 enum Role {
@@ -28,6 +29,7 @@ export const UserForm = ({
     initialLastName,
     initialRole,
     initialActiveState,
+    updating
 }: IProps) => {
     const [isUpdating, setIsUpdating] = useState(false);
     const [active, setActive] = useState<boolean>(initialActiveState || false);
@@ -35,11 +37,13 @@ export const UserForm = ({
 
     const validationSchema: ObjectSchema<any> = yup.object().shape({
         username: yup.string().required("Username is required"),
-        first_name: yup.string().required("First name is required"),
-        last_name: yup.string().required("Last name is required"),
+        first_name: yup.string(),
+        last_name: yup.string(),
+        phone: yup.string().required('Phone number is required!'),
+        email: yup.string().email()
     });
 
-    const handleSubmit = async (data: { username: string; first_name: string; last_name: string; }) => {
+    const handleSubmit = async (data: { username: string; first_name: string; last_name: string; phone: string; email: string }) => {
         setIsUpdating(true);
         try {
             await onSubmit({
@@ -48,6 +52,8 @@ export const UserForm = ({
                 last_name: data.last_name,
                 active,
                 role,
+                phone: data.phone,
+                email: data.email
             });
         } catch (error) {
             console.error('Submission error:', error);
@@ -72,6 +78,8 @@ export const UserForm = ({
                     last_name: initialLastName ?? '',
                 }}
             >
+                {!updating && <EditableInput name="phone" label="Phone" />}
+                {!updating && <EditableInput name="email" label="Email" />}
                 <EditableInput name="username" label="Username" />
                 <EditableInput name="first_name" label="First Name" />
                 <EditableInput name="last_name" label="Last Name" />

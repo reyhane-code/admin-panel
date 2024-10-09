@@ -31,7 +31,7 @@ const CreateUserForm = ({ onSubmit }: IProps) => {
         );
     }
     return <div>
-        <UserForm onSubmit={handleSubmit}
+        <UserForm updating={false} onSubmit={handleSubmit}
         />
     </div>
 
