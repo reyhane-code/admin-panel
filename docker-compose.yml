@@ -1,0 +1,13 @@
+version: '3.9'  # Use a recent version
+
+services:
+  admin-panel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3001:6000"  # Map the host port 6000 to the container port 6000
+    volumes:
+      - .:/app  # Mount the current directory to the container for live reloading
+    environment:
+      - NODE_ENV=development
