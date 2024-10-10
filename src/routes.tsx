@@ -3,7 +3,6 @@ import ErrorPage from "./pages/ErrorPage";
 import HomePage from "./pages/HomePage";
 import DefaultLayout from "./components/layouts/DefaultLayout";
 import LoginPage from "./pages/LoginPage";
-import ProfilePage from "./pages/ProfilePage";
 import PrivateRoutes from "./components/PrivateRoutes";
 import RouterLayout from "./components/layouts/RouterLayout";
 import ArticlesPage from "./pages/ArticlesPage";
@@ -93,16 +92,6 @@ const router = createBrowserRouter([
         <ErrorPage />
       </RouterLayout>
     ),
-    children: [
-      {
-        path: "profile",
-        element: (
-          <RouterLayout>
-            <ProfilePage />
-          </RouterLayout>
-        ),
-      },
-    ],
   },
 ]);
 
