@@ -1,13 +1,16 @@
-version: '3.9'  # Use a recent version
-
+version: '3.9'
 services:
   admin-panel:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: gamehub-admin:latest  # Ensure this image is built and pushed to a registry
     ports:
-      - "3001:3001"  # Map the host port 6000 to the container port 6000
+      - "3001" 
     volumes:
-      - .:/app  # Mount the current directory to the container for live reloading
+      - .:/app  # This will not work in Swarm mode; consider using a different approach for persistent storage
     environment:
       - NODE_ENV=development
+    networks:
+      - gamehub-network  # Use the overlay network
+
+networks:
+  gamehub-network:
+    external: true
